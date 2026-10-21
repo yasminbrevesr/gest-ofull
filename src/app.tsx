@@ -11,6 +11,8 @@ const ResetPasswordPage = lazy(() => import('@/features/auth/reset-password-page
 const OnboardingPage = lazy(() => import('@/features/onboarding/onboarding-page'))
 const DashboardPage = lazy(() => import('@/features/dashboard/dashboard-page'))
 const ProfilePage = lazy(() => import('@/features/profile/profile-page'))
+const CalculatorPage = lazy(() => import('@/features/calculator/calculator-page'))
+const SimulationsPage = lazy(() => import('@/features/calculator/simulations-page'))
 const NotFoundPage = lazy(() => import('@/features/not-found-page'))
 const TermsPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.TermsPage })))
 const PrivacyPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.PrivacyPage })))
@@ -30,6 +32,8 @@ export function App() {
 
           <Route element={<RequireAuth><AppLayout /></RequireAuth>}>
             <Route index element={<DashboardPage />} />
+            <Route path="calculadora" element={<CalculatorPage />} />
+            <Route path="calculadora/simulacoes" element={<SimulationsPage />} />
             <Route path="perfil" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>

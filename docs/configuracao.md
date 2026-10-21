@@ -99,7 +99,28 @@ where user_id = (select id from auth.users where email = 'admin@suaempresa.com.b
 
 Saia e entre de novo no app para o menu **Administração** aparecer.
 
-## 8. Antes de abrir para o público
+## 8. Conferir as tarifas da calculadora
+
+A calculadora usa as tabelas `categories` (categorias e comissões) e
+`fee_rules` (comissões e custo fixo por faixa de preço, com vigência). Os
+valores que vêm na migration são **referências aproximadas**: confira na página
+oficial de custos do Mercado Livre antes de abrir para o público.
+
+1. **Table Editor → fee_rules**: confira os percentuais de comissão (Clássico e
+   Premium) de cada categoria e as faixas de custo fixo.
+   - Tarifa nova: em vez de editar a antiga, preencha `valid_to` na antiga
+     (último dia) e crie outra linha com o novo valor e `valid_from` (primeiro dia).
+     Assim o histórico fica guardado.
+2. **Table Editor → app_settings**: preencha
+   - `fees_reviewed_on` com a data da conferência (aparece na calculadora como
+     "Valores de referência, atualizados em DD/MM/AAAA");
+   - `fees_source_url` com o link da página oficial de tarifas;
+   - `margin_healthy_pct`: margem a partir da qual a venda fica "saudável" (padrão 15%).
+
+> Depois que a área administrativa estiver pronta, isso também pode ser feito
+> pelo próprio app, em **Administração → Tarifas**.
+
+## 9. Antes de abrir para o público
 
 - Preencha os campos entre colchetes nos **Termos de Uso** e na **Política de
   Privacidade** (`src/features/legal/texts.ts`) e revise com assessoria jurídica.

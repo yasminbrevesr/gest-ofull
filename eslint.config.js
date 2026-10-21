@@ -22,6 +22,7 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       // Provedores exportam hooks junto do componente (padrão do projeto).
       'react-refresh/only-export-components': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 )
