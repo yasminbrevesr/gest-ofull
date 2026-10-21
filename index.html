@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#488399" />
+    <meta name="description" content="Aprenda a vender no Mercado Livre, calcule o lucro real de cada venda e controle seu estoque." />
+    <title>Gestão Decola Full</title>
+    <script>
+      // Aplica o tema salvo antes de desenhar a tela (evita piscar claro/escuro).
+      try {
+        if (localStorage.getItem('gdf-theme') === 'dark') document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

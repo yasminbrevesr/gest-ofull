@@ -1,0 +1,197 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/lora';
+
+/* Tema escuro ativado pela classe .dark no <html> (ver ThemeProvider). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Paleta oficial. Use somente estes tokens (e os neutros derivados) nos
+ * componentes, nunca cores soltas.
+ * - coral / manteiga / rosa são cores de FUNDO: o texto sobre elas é sempre
+ *   grafite (--on-accent). Nunca use manteiga ou rosa como cor de texto.
+ * - --primary-text é o azul petróleo em versão legível para textos e links
+ *   (contraste AA sobre o fundo de cada tema).
+ */
+:root {
+  --background: #f4f2f0;
+  --foreground: #3f3f3f;
+  --card: #ffffff;
+  --card-foreground: #3f3f3f;
+  --muted: #ece8e4;
+  --muted-foreground: #7a7a7a;
+  --border: #d8d8d8;
+  --input: #d8d8d8;
+  --ring: #488399;
+
+  --primary: #488399;
+  --primary-hover: #3a6b7e;
+  --primary-foreground: #ffffff;
+  --primary-text: #3a6b7e;
+  --primary-soft: #e3edf0;
+
+  --coral: #ea9393;
+  --butter: #f4d38a;
+  --rose: #f1bebe;
+  --gray-light: #d8d8d8;
+  --on-accent: #3f3f3f;
+
+  /* "Saudável" no indicador de margem. A paleta não tem verde: usamos o
+     azul petróleo. Para trocar, basta mudar este token. */
+  --success: #488399;
+}
+
+.dark {
+  --background: #1f2a2e;
+  --foreground: #f4f2f0;
+  --card: #27353a;
+  --card-foreground: #f4f2f0;
+  --muted: #2e3e44;
+  --muted-foreground: #a9b4b8;
+  --border: #3a4a50;
+  --input: #3a4a50;
+  --primary-text: #8cc0d2;
+  --primary-soft: #2c4750;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-text: var(--primary-text);
+  --color-primary-soft: var(--primary-soft);
+  --color-coral: var(--coral);
+  --color-butter: var(--butter);
+  --color-rose: var(--rose);
+  --color-gray-light: var(--gray-light);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Lora Variable', Georgia, 'Times New Roman', serif;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+
+  --shadow-soft: 0 1px 2px rgb(63 63 63 / 0.04), 0 2px 8px rgb(63 63 63 / 0.04);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: 'tnum' 0;
+    -webkit-font-smoothing: antialiased;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--rose);
+    color: var(--on-accent);
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Conteúdo em markdown da jornada e do glossário. */
+@utility prose-guide {
+  line-height: 1.65;
+
+  & h2 {
+    font-size: 1.25rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  & h3 {
+    font-size: 1.05rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  & p {
+    margin-block: 0.6rem;
+  }
+  & ul,
+  & ol {
+    margin-block: 0.6rem;
+    padding-left: 1.4rem;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li {
+    margin-block: 0.25rem;
+  }
+  & a {
+    color: var(--primary-text);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & strong {
+    font-weight: 600;
+  }
+  & blockquote {
+    margin-block: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    background-color: color-mix(in srgb, var(--butter) 45%, transparent);
+    color: var(--foreground);
+  }
+  & table {
+    width: 100%;
+    margin-block: 1rem;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  & th,
+  & td {
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  & th {
+    background-color: var(--muted);
+    font-weight: 600;
+  }
+}

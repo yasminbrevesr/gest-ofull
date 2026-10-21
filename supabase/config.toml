@@ -1,0 +1,5 @@
+# Configuração do Supabase CLI (usada no deploy das Edge Functions).
+# Todas as funções validam o acesso no próprio código (usuário logado,
+# segredo do agendador ou notificação do Mercado Livre), por isso
+# verify_jwt = false. Ver docs/configuracao.md.
+project_id = "gestao-decola-full"
