@@ -64,7 +64,7 @@ function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" aria-label="Menu da conta" className="rounded-full">
-          <span className="flex size-8 items-center justify-center rounded-full bg-linear-to-br from-primary to-cyan text-xs font-bold text-on-accent">
+          <span className="flex size-8 items-center justify-center rounded-full bg-linear-to-br from-primary to-amber text-xs font-bold text-on-accent">
             {initials}
           </span>
         </Button>
@@ -105,7 +105,7 @@ export function AppLayout() {
       </a>
 
       {/* O menu lateral é sempre escuro, também no tema claro. */}
-      <aside className="dark sticky top-0 hidden h-dvh flex-col gap-6 border-r border-border bg-sidebar bg-[radial-gradient(420px_320px_at_0%_0%,rgb(16_224_154/0.14),transparent_70%)] px-4 py-5 text-foreground lg:flex">
+      <aside className="dark sticky top-0 hidden h-dvh flex-col gap-6 border-r border-border bg-sidebar bg-[radial-gradient(420px_320px_at_0%_0%,rgb(255_196_0/0.10),transparent_70%)] px-4 py-5 text-foreground lg:flex">
         <Link to="/" className="rounded-md px-1">
           <Brand />
         </Link>

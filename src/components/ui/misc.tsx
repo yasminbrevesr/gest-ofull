@@ -6,7 +6,7 @@ function Progress({ className, value, ...props }: ComponentProps<typeof Progress
   return (
     <ProgressPrimitive.Root className={cn('relative h-2.5 w-full overflow-hidden rounded-full bg-muted', className)} value={value} {...props}>
       <ProgressPrimitive.Indicator
-        className="h-full rounded-full bg-linear-to-r from-primary to-cyan transition-[width] duration-200"
+        className="h-full rounded-full bg-linear-to-r from-primary to-amber transition-[width] duration-200"
         style={{ width: `${Math.max(0, Math.min(100, value ?? 0))}%` }}
       />
     </ProgressPrimitive.Root>

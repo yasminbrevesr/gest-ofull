@@ -60,7 +60,7 @@ gest-ofull/
 
 ## Visual
 
-Tema escuro com gradiente e verde forte de destaque (ciano de apoio), títulos em Plus Jakarta Sans e textos em Inter. As cores ficam só em tokens no topo de `src/index.css` (`:root` = tema claro, `.dark` = tema escuro): para trocar a cor de destaque, altere `--primary`, `--primary-hover` e `--primary-text` nos dois temas. O menu lateral e o painel de apresentação do login são sempre escuros.
+Tema escuro (preto) com gradiente e amarelo dourado de destaque (âmbar de apoio; verde só para estados positivos), logo própria RV (`src/components/layout/brand.tsx` e `public/favicon.svg`), títulos em Plus Jakarta Sans e textos em Inter. As cores ficam só em tokens no topo de `src/index.css` (`:root` = tema claro, `.dark` = tema escuro): para trocar a cor de destaque, altere `--primary`, `--primary-hover` e `--primary-text` nos dois temas. O menu lateral e o painel de apresentação do login são sempre escuros.
 
 ## Rodar no computador
 

@@ -2,7 +2,7 @@ import { ArrowRight, Calculator, Map as MapIcon, Store } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
-import { Brand, BrandMark } from './brand'
+import { Brand, BrandMark, RvGlyph } from './brand'
 import { ThemeToggle } from './theme-toggle'
 
 const flow = [
@@ -17,12 +17,14 @@ function Hero() {
     <section className="dark relative hidden flex-col justify-between overflow-hidden bg-background px-10 py-10 text-foreground lg:flex xl:px-16">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_520px_at_0%_0%,rgb(16_224_154/0.22),transparent_60%),radial-gradient(600px_480px_at_100%_100%,rgb(34_211_238/0.12),transparent_60%),linear-gradient(160deg,#071510,#030806)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_520px_at_0%_0%,rgb(255_196_0/0.20),transparent_60%),radial-gradient(600px_480px_at_100%_100%,rgb(255_159_28/0.10),transparent_60%),linear-gradient(160deg,#141106,#050505)]"
       />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(var(--foreground)_1px,transparent_1px),linear-gradient(90deg,var(--foreground)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_70%)]"
       />
+
+      <RvGlyph className="pointer-events-none absolute -right-28 -bottom-28 size-[36rem] text-primary/[0.07]" strokeWidth={34} />
 
       <Link to="/entrar" className="relative w-fit rounded-md">
         <Brand />
@@ -79,9 +81,7 @@ export function AuthLayout({ title, subtitle, children, footer }: { title: strin
         <main className="flex flex-1 items-start justify-center px-4 pt-4 pb-12 sm:items-center sm:pt-0">
           <div className="w-full max-w-md space-y-6">
             <div className="space-y-3">
-              <span className="flex size-12 items-center justify-center rounded-xl border border-primary/30 bg-primary/10">
-                <BrandMark className="size-7 drop-shadow-none" />
-              </span>
+              <BrandMark className="size-12 rounded-xl" />
               <h1 className="text-3xl sm:text-4xl">{title}</h1>
               {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
             </div>

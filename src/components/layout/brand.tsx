@@ -1,24 +1,42 @@
 import { useId } from 'react'
 import { cn } from '@/lib/utils'
 
-export function BrandMark({ className }: { className?: string }) {
-  const gradient = useId()
+/** Traços do monograma RV (coordenadas da arte original, 1256×1256). */
+const RV_PATHS = ['M354 538V276.5H555A128.5 128.5 0 0 1 603 524.4L793 858L1008 489', 'M333 538.5H488.5L728 1001', 'M354 628V791.5H620']
+
+/** Monograma RV solto (sem fundo), na cor do texto atual. */
+export function RvGlyph({ className, strokeWidth = 43 }: { className?: string; strokeWidth?: number }) {
+  const clip = `rv${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
   return (
-    <svg viewBox="0 0 64 64" aria-hidden className={cn('size-9 shrink-0 drop-shadow-[0_0_14px_rgb(16_224_154/0.35)]', className)}>
-      <defs>
-        <linearGradient id={gradient} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#10E09A" />
-          <stop offset="1" stopColor="#22D3EE" />
-        </linearGradient>
-      </defs>
-      <rect width="64" height="64" rx="14" fill={`url(#${gradient})`} />
-      <path d="M14 34 50 16 40 50 31 38 22 46 24 36Z" fill="#04120C" />
-      <path d="M24 36 50 16 31 38Z" fill="#0B3B2A" />
+    <svg viewBox="304 229 740 780" aria-hidden className={cn('shrink-0', className)}>
+      <clipPath id={clip}>
+        <path d="M300 200H900V520H1060V980H300Z" />
+      </clipPath>
+      <g fill="none" stroke="currentColor" strokeWidth={strokeWidth} clipPath={`url(#${clip})`}>
+        {RV_PATHS.map((d) => (
+          <path key={d} d={d} />
+        ))}
+      </g>
     </svg>
   )
 }
 
-/** Marca: "gestão" + "DECOLA FULL" em verde, espaçado (como no login). */
+/** Ícone da marca: bloco amarelo com o monograma RV em preto. */
+export function BrandMark({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        'flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-primary text-on-accent shadow-[0_0_18px_-4px_rgb(255_196_0/0.55)]',
+        className,
+      )}
+    >
+      <RvGlyph className="size-[66%]" strokeWidth={58} />
+    </span>
+  )
+}
+
+/** Marca: "gestão" + "DECOLA FULL" em amarelo, espaçado (como no login). */
 export function Brand({ className }: { className?: string }) {
   return (
     <span className={cn('flex items-center gap-2.5', className)}>

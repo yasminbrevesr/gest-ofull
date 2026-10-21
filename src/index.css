@@ -6,76 +6,78 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Identidade visual: fundo escuro com gradiente, verde forte de destaque e
- * ciano de apoio. Use somente estes tokens nos componentes, nunca cores soltas.
- * - primary (verde): botões principais, links, item ativo, destaques.
- * - coral (erro/prejuízo), butter (aviso/margem apertada), rose (dica): em
- *   selos e avisos use fundo transparente da cor + texto *-text (contraste AA).
- * - Texto sobre fundo verde/cheio: --on-accent (quase preto).
+ * Identidade visual: preto + amarelo dourado (inspirado no Mercado Livre, mas
+ * com tom próprio) e âmbar de apoio. Use somente estes tokens nos componentes.
+ * - primary (amarelo): botões principais, links, item ativo, destaques.
+ * - success (verde): só para estados positivos (margem saudável, conectado).
+ * - coral (erro/prejuízo), butter (aviso, laranja), rose (dica): em selos e
+ *   avisos use fundo transparente da cor + texto *-text (contraste AA).
+ * - Texto sobre fundo amarelo/cheio: --on-accent (preto).
  * O tema escuro é o padrão; o claro usa superfícies tingidas (pouco branco).
  */
 :root {
   color-scheme: light;
-  --background: #e6ede9;
-  --background-2: #d9e3de;
-  --foreground: #0b1712;
-  --card: #f3f7f5;
-  --card-2: #ebf1ee;
-  --card-foreground: #0b1712;
-  --field: #eef4f1;
-  --muted: #dfe8e3;
-  --muted-foreground: #4f6358;
-  --border: #c6d4cc;
-  --input: #b9c9c0;
-  --ring: #00b47a;
-  --sidebar: #06100c;
+  --background: #ebe8df;
+  --background-2: #dfdbd0;
+  --foreground: #111111;
+  --card: #f4f2ec;
+  --card-2: #ece9e1;
+  --card-foreground: #111111;
+  --field: #efece5;
+  --muted: #e2ded4;
+  --muted-foreground: #5a5650;
+  --border: #d2cdc1;
+  --input: #c4beb1;
+  --ring: #d9a400;
+  --sidebar: #0a0a0a;
 
-  --primary: #00c584;
-  --primary-hover: #00ab72;
-  --primary-foreground: #04120c;
-  --primary-text: #00774f;
-  --primary-soft: #cdeee0;
-  --cyan: #0e7490;
+  --primary: #ffc400;
+  --primary-hover: #f0b400;
+  --primary-foreground: #0a0a0a;
+  --primary-text: #7a5600;
+  --primary-soft: #f7e7b0;
+  --amber: #b45309;
 
+  --success: #16a34a;
+  --success-text: #166534;
   --coral: #e5484d;
   --coral-text: #b42318;
-  --butter: #f5a524;
-  --butter-text: #8a5300;
+  --butter: #ea7a0c;
+  --butter-text: #9a4400;
   --rose: #e0457b;
   --rose-text: #a21c54;
-  --on-accent: #04120c;
-
-  /* "Saudável" no indicador de margem. */
-  --success: var(--primary);
+  --on-accent: #0a0a0a;
 }
 
 .dark {
   color-scheme: dark;
-  --background: #06100c;
-  --background-2: #030806;
-  --foreground: #e7f4ed;
-  --card: #0e1b15;
-  --card-2: #0a1510;
-  --card-foreground: #e7f4ed;
-  --field: #07110d;
-  --muted: #12221b;
-  --muted-foreground: #8ba699;
-  --border: #1b2f25;
-  --input: #23392e;
-  --ring: #10e09a;
-  --sidebar: #040b08;
+  --background: #0a0a0a;
+  --background-2: #050505;
+  --foreground: #f5f5f4;
+  --card: #151515;
+  --card-2: #101010;
+  --card-foreground: #f5f5f4;
+  --field: #0e0e0e;
+  --muted: #1d1d1d;
+  --muted-foreground: #a8a39a;
+  --border: #272727;
+  --input: #343434;
+  --ring: #ffc400;
+  --sidebar: #070707;
 
-  --primary: #10e09a;
-  --primary-hover: #0cc487;
-  --primary-foreground: #04120c;
-  --primary-text: #3cf0b5;
-  --primary-soft: #0f2b21;
-  --cyan: #22d3ee;
+  --primary: #ffc400;
+  --primary-hover: #e6b000;
+  --primary-foreground: #0a0a0a;
+  --primary-text: #ffd23f;
+  --primary-soft: #2a2208;
+  --amber: #ff9f1c;
 
+  --success: #22c55e;
+  --success-text: #4ade80;
   --coral: #ff6b6b;
   --coral-text: #ff9b9b;
-  --butter: #ffc24d;
-  --butter-text: #ffd57f;
+  --butter: #ff8a3d;
+  --butter-text: #ffb27a;
   --rose: #f472b6;
   --rose-text: #f9a8d4;
 }
@@ -98,7 +100,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-text: var(--primary-text);
   --color-primary-soft: var(--primary-soft);
-  --color-cyan: var(--cyan);
+  --color-amber: var(--amber);
   --color-coral: var(--coral);
   --color-coral-text: var(--coral-text);
   --color-butter: var(--butter);
@@ -107,6 +109,7 @@
   --color-rose-text: var(--rose-text);
   --color-on-accent: var(--on-accent);
   --color-success: var(--success);
+  --color-success-text: var(--success-text);
 
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
@@ -120,16 +123,16 @@
   --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent), 0 8px 28px -10px color-mix(in srgb, var(--primary) 55%, transparent);
 }
 
-/* Brilho verde sutil no canto dos cartões (só imagem: a cor vem de bg-*). */
+/* Brilho amarelo sutil no canto dos cartões (só imagem: a cor vem de bg-*). */
 @utility surface {
   background-image:
-    linear-gradient(155deg, color-mix(in srgb, var(--primary) 6%, transparent), transparent 40%),
+    linear-gradient(155deg, color-mix(in srgb, var(--primary) 5%, transparent), transparent 40%),
     linear-gradient(180deg, transparent, color-mix(in srgb, var(--card-2) 70%, transparent));
 }
 
-/* Texto com gradiente verde → ciano (palavras em destaque nos títulos). */
+/* Texto com gradiente amarelo → âmbar (palavras em destaque nos títulos). */
 @utility text-gradient {
-  background-image: linear-gradient(90deg, var(--primary-text), var(--cyan));
+  background-image: linear-gradient(90deg, var(--primary-text), var(--amber));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -137,9 +140,9 @@
 
 /* Selos e avisos: fundo transparente da cor + texto legível. */
 @utility tint-success {
-  background-color: color-mix(in srgb, var(--primary) 14%, transparent);
-  color: var(--primary-text);
-  border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+  background-color: color-mix(in srgb, var(--success) 14%, transparent);
+  color: var(--success-text);
+  border-color: color-mix(in srgb, var(--success) 35%, transparent);
 }
 @utility tint-warning {
   background-color: color-mix(in srgb, var(--butter) 15%, transparent);
@@ -175,8 +178,8 @@
     min-height: 100dvh;
     background-color: var(--background);
     background-image:
-      radial-gradient(900px 600px at -10% -15%, color-mix(in srgb, var(--primary) 13%, transparent), transparent 60%),
-      radial-gradient(700px 520px at 110% -5%, color-mix(in srgb, var(--cyan) 7%, transparent), transparent 60%),
+      radial-gradient(900px 600px at -10% -15%, color-mix(in srgb, var(--primary) 10%, transparent), transparent 60%),
+      radial-gradient(700px 520px at 110% -5%, color-mix(in srgb, var(--amber) 6%, transparent), transparent 60%),
       linear-gradient(180deg, var(--background), var(--background-2));
     background-attachment: fixed;
     color: var(--foreground);

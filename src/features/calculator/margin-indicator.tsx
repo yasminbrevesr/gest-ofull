@@ -18,13 +18,13 @@ export function MarginBadge({ status, className }: { status: MarginStatus; class
 }
 
 export const statusSurface: Record<MarginStatus, string> = {
-  healthy: 'border-primary/30 bg-primary/10',
+  healthy: 'border-success/30 bg-success/10',
   tight: 'border-butter/40 bg-butter/10',
   loss: 'border-coral/45 bg-coral/12',
 }
 
 export const statusText: Record<MarginStatus, string> = {
-  healthy: 'text-primary-text',
+  healthy: 'text-success-text',
   tight: 'text-butter-text',
   loss: 'text-coral-text',
 }
