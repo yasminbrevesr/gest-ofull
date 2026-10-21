@@ -1,4 +1,4 @@
-import { BookOpen, Calculator, Home, Map as MapIcon, Package, Store, UserRound, type LucideIcon } from 'lucide-react'
+import { BookOpen, Calculator, Home, Map as MapIcon, Package, Settings, Store, UserRound, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -16,4 +16,5 @@ export const navItems: NavItem[] = [
   { to: '/mercado-livre', label: 'Mercado Livre', icon: Store },
   { to: '/glossario', label: 'Glossário', icon: BookOpen },
   { to: '/perfil', label: 'Meu perfil', icon: UserRound },
+  { to: '/admin', label: 'Administração', icon: Settings, admin: true },
 ]

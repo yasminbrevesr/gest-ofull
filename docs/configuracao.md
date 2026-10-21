@@ -117,8 +117,9 @@ oficial de custos do Mercado Livre antes de abrir para o público.
    - `fees_source_url` com o link da página oficial de tarifas;
    - `margin_healthy_pct`: margem a partir da qual a venda fica "saudável" (padrão 15%).
 
-> Depois que a área administrativa estiver pronta, isso também pode ser feito
-> pelo próprio app, em **Administração → Tarifas**.
+> O jeito mais fácil é pelo próprio app, em **Administração → Tarifas**: lá
+> dá para alterar comissões e faixas com data de início (a regra anterior é
+> encerrada sozinha), ver o histórico e clicar em **Conferi hoje**.
 
 ## 9. Revisar o conteúdo da jornada e do glossário
 
@@ -128,8 +129,9 @@ glossário (`glossary_terms`) vêm com um texto inicial. Regras do Mercado Livre
 os links de cada etapa antes de abrir para o público. O conteúdo é em markdown
 (`## título`, `**negrito**`, listas com `-`, tabelas e `> destaque`).
 
-> Pela área administrativa do app (Administração → Jornada / Glossário) dá para
-> editar com pré-visualização, sem mexer no banco.
+> Pela área administrativa do app (**Administração → Jornada / Glossário**) dá
+> para editar com pré-visualização, reordenar e despublicar etapas, sem mexer
+> no banco.
 
 ## 10. Integração com o Mercado Livre
 
@@ -247,5 +249,13 @@ Agendamentos (confira em `select jobname, schedule from cron.job;`):
 
 ## 11. Antes de abrir para o público
 
-- Preencha os campos entre colchetes nos **Termos de Uso** e na **Política de
-  Privacidade** (`src/features/legal/texts.ts`) e revise com assessoria jurídica.
+- [ ] Preencha os campos entre colchetes nos **Termos de Uso** e na **Política de
+      Privacidade** (`src/features/legal/texts.ts`) e revise com assessoria jurídica.
+- [ ] Confira as tarifas na página oficial do Mercado Livre e clique em
+      **Administração → Tarifas → Conferi hoje**.
+- [ ] Revise os textos da jornada (principalmente Decola, MEI e certificado
+      digital) e os links oficiais.
+- [ ] Configure um **SMTP próprio** em **Authentication → Emails → SMTP Settings**:
+      o envio de e-mails padrão do Supabase tem limite baixo de mensagens por
+      hora (confirmação de cadastro e troca de senha param de chegar).
+- [ ] Teste a integração com uma conta de teste do Mercado Livre (passos 10.5 e 10.7).

@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { FullPageLoading } from '@/components/common/states'
 import { AppLayout } from '@/components/layout/app-layout'
-import { PublicOnly, RequireAuth } from '@/components/layout/guards'
+import { PublicOnly, RequireAdmin, RequireAuth } from '@/components/layout/guards'
 
 const LoginPage = lazy(() => import('@/features/auth/login-page'))
 const SignupPage = lazy(() => import('@/features/auth/signup-page'))
@@ -23,6 +23,12 @@ const ImportPage = lazy(() => import('@/features/stock/import-page'))
 const MovementsPage = lazy(() => import('@/features/stock/movements-page'))
 const MercadoLivrePage = lazy(() => import('@/features/mercadolivre/ml-page'))
 const MlConnectedPage = lazy(() => import('@/features/mercadolivre/connected-page'))
+const AdminLayout = lazy(() => import('@/features/admin/admin-layout'))
+const JourneyAdminPage = lazy(() => import('@/features/admin/journey-admin-page'))
+const StepEditorPage = lazy(() => import('@/features/admin/step-editor-page'))
+const GlossaryAdminPage = lazy(() => import('@/features/admin/glossary-admin-page'))
+const FeesAdminPage = lazy(() => import('@/features/admin/fees-admin-page'))
+const UsersAdminPage = lazy(() => import('@/features/admin/users-admin-page'))
 const NotFoundPage = lazy(() => import('@/features/not-found-page'))
 const TermsPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.TermsPage })))
 const PrivacyPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.PrivacyPage })))
@@ -83,6 +89,21 @@ export function App() {
             <Route path="mercado-livre/conectado" element={<MlConnectedPage />} />
             <Route path="glossario" element={<GlossaryPage />} />
             <Route path="perfil" element={<ProfilePage />} />
+            <Route
+              path="admin"
+              element={
+                <RequireAdmin>
+                  <AdminLayout />
+                </RequireAdmin>
+              }
+            >
+              <Route index element={<Navigate to="jornada" replace />} />
+              <Route path="jornada" element={<JourneyAdminPage />} />
+              <Route path="jornada/:id" element={<StepEditorPage />} />
+              <Route path="glossario" element={<GlossaryAdminPage />} />
+              <Route path="tarifas" element={<FeesAdminPage />} />
+              <Route path="usuarios" element={<UsersAdminPage />} />
+            </Route>
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
