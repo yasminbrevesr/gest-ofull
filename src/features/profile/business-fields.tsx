@@ -31,7 +31,13 @@ export function BusinessFields({ value, onChange }: { value: BusinessValues; onC
         <p id="person-type-label" className="text-sm font-medium">
           Como você vende (ou vai vender)?
         </p>
-        <RadioCards aria-labelledby="person-type-label" columns={3} value={value.person_type ?? undefined} onValueChange={(v) => update({ person_type: v })} options={personTypeOptions} />
+        <RadioCards
+          aria-labelledby="person-type-label"
+          columns={3}
+          value={value.person_type ?? undefined}
+          onValueChange={(v) => update({ person_type: v })}
+          options={personTypeOptions}
+        />
       </div>
 
       {showRegime && (
@@ -39,7 +45,13 @@ export function BusinessFields({ value, onChange }: { value: BusinessValues; onC
           <p id="regime-label" className="text-sm font-medium">
             Regime tributário
           </p>
-          <RadioCards aria-labelledby="regime-label" columns={3} value={value.tax_regime ?? undefined} onValueChange={(v) => update({ tax_regime: v })} options={taxRegimeOptions} />
+          <RadioCards
+            aria-labelledby="regime-label"
+            columns={3}
+            value={value.tax_regime ?? undefined}
+            onValueChange={(v) => update({ tax_regime: v })}
+            options={taxRegimeOptions}
+          />
         </div>
       )}
 

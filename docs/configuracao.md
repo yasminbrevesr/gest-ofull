@@ -46,7 +46,7 @@ Os arquivos ficam em `supabase/migrations/`. Rode **todos, na ordem do nome**
 
 ### Login com Google (opcional)
 
-1. Siga o guia do Supabase "Login with Google" (é preciso criar um *OAuth client*
+1. Siga o guia do Supabase "Login with Google" (é preciso criar um _OAuth client_
    no Google Cloud) e ative o provedor em **Authentication → Sign In / Providers → Google**.
 2. No app, defina a variável `VITE_ENABLE_GOOGLE_LOGIN=true`. Sem ela, o botão
    "Continuar com Google" não aparece.
@@ -59,7 +59,7 @@ Botão **Connect** no topo do projeto (ou **Project Settings → API Keys**):
 - **Publishable key**, começa com `sb_publishable_`
 
 Elas vão no app (arquivo `.env.local` no computador, ou nas variáveis da
-hospedagem). **Nunca** use a *Secret key* (`sb_secret_...`) no app.
+hospedagem). **Nunca** use a _Secret key_ (`sb_secret_...`) no app.
 
 ## 5. Publicar o app (Vercel)
 
@@ -67,9 +67,9 @@ hospedagem). **Nunca** use a *Secret key* (`sb_secret_...`) no app.
 2. Escolha o repositório `gest-ofull`. O Vercel detecta o Vite sozinho.
 3. Em **Environment Variables**, adicione:
 
-   | Name                            | Value |
-   | ------------------------------- | ----- |
-   | `VITE_SUPABASE_URL`             | Project URL do passo 4 |
+   | Name                            | Value                      |
+   | ------------------------------- | -------------------------- |
+   | `VITE_SUPABASE_URL`             | Project URL do passo 4     |
    | `VITE_SUPABASE_PUBLISHABLE_KEY` | Publishable key do passo 4 |
 
 4. Clique em **Deploy**. O arquivo `vercel.json` já cuida das rotas do app.
@@ -120,7 +120,18 @@ oficial de custos do Mercado Livre antes de abrir para o público.
 > Depois que a área administrativa estiver pronta, isso também pode ser feito
 > pelo próprio app, em **Administração → Tarifas**.
 
-## 9. Antes de abrir para o público
+## 9. Revisar o conteúdo da jornada e do glossário
+
+As 9 etapas de "Como começar a vender" (tabela `guide_steps`) e os termos do
+glossário (`glossary_terms`) vêm com um texto inicial. Regras do Mercado Livre
+(Decola, tarifas, prazos) e da Receita (limite do MEI) mudam: revise os textos e
+os links de cada etapa antes de abrir para o público. O conteúdo é em markdown
+(`## título`, `**negrito**`, listas com `-`, tabelas e `> destaque`).
+
+> Pela área administrativa do app (Administração → Jornada / Glossário) dá para
+> editar com pré-visualização, sem mexer no banco.
+
+## 10. Antes de abrir para o público
 
 - Preencha os campos entre colchetes nos **Termos de Uso** e na **Política de
   Privacidade** (`src/features/legal/texts.ts`) e revise com assessoria jurídica.

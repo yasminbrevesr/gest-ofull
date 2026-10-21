@@ -117,7 +117,9 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
           </Link>
         </Alert>
       )}
-      {prefill && !simulation && <Alert variant="tip">Calculando para o produto {prefill.name ? `“${prefill.name}”` : 'do estoque'}: custo e preço já preenchidos.</Alert>}
+      {prefill && !simulation && (
+        <Alert variant="tip">Calculando para o produto {prefill.name ? `“${prefill.name}”` : 'do estoque'}: custo e preço já preenchidos.</Alert>
+      )}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tabs value={mode} onValueChange={(v) => setMode(v as 'forward' | 'reverse')}>
@@ -144,7 +146,12 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
                 <CardDescription>Calculamos o menor preço de venda que deixa essa margem de lucro, já com todas as tarifas.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Field label="Margem desejada" htmlFor="target-margin" hint={`Abaixo de ${formatPercent(ctx.healthyMargin, 0)} a margem é considerada apertada.`} className="max-w-xs">
+                <Field
+                  label="Margem desejada"
+                  htmlFor="target-margin"
+                  hint={`Abaixo de ${formatPercent(ctx.healthyMargin, 0)} a margem é considerada apertada.`}
+                  className="max-w-xs"
+                >
                   <DecimalInput id="target-margin" suffix="%" value={targetMargin} onValueChange={setTargetMargin} />
                 </Field>
               </CardContent>
@@ -169,13 +176,17 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
             <EmptyState
               icon={<Calculator />}
               title={mode === 'forward' ? 'Preencha para ver o lucro' : 'Preencha para ver o preço'}
-              description={(mode === 'forward' ? (!forward.ok ? forward.error : null) : reverse && !reverse.ok ? reverse.error : 'Informe a margem desejada.') ?? undefined}
+              description={
+                (mode === 'forward' ? (!forward.ok ? forward.error : null) : reverse && !reverse.ok ? reverse.error : 'Informe a margem desejada.') ?? undefined
+              }
             />
           )}
         </aside>
       </div>
 
-      {mode === 'forward' && forward.ok && <MobileSummary netProfit={forward.result.netProfit} marginPct={forward.result.marginPct} status={forward.result.status} />}
+      {mode === 'forward' && forward.ok && (
+        <MobileSummary netProfit={forward.result.netProfit} marginPct={forward.result.marginPct} status={forward.result.status} />
+      )}
 
       {saveOpen && forward.ok && (
         <SaveSimulationDialog
@@ -194,7 +205,17 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
   )
 }
 
-function SuggestedPrices({ inputs, targetMargin, ctx, onApply }: { inputs: CalculatorInputs; targetMargin: number; ctx: CalcContext; onApply: (price: number, type: ListingType) => void }) {
+function SuggestedPrices({
+  inputs,
+  targetMargin,
+  ctx,
+  onApply,
+}: {
+  inputs: CalculatorInputs
+  targetMargin: number
+  ctx: CalcContext
+  onApply: (price: number, type: ListingType) => void
+}) {
   const types: ListingType[] = ['classico', 'premium']
   return (
     <Card>
@@ -206,7 +227,10 @@ function SuggestedPrices({ inputs, targetMargin, ctx, onApply }: { inputs: Calcu
         {types.map((type) => {
           const outcome = suggestPrice({ ...inputs, listingType: type }, targetMargin, ctx)
           return (
-            <div key={type} className={cn('space-y-2 rounded-lg border p-3', inputs.listingType === type ? 'border-primary ring-1 ring-primary' : 'border-border')}>
+            <div
+              key={type}
+              className={cn('space-y-2 rounded-lg border p-3', inputs.listingType === type ? 'border-primary ring-1 ring-primary' : 'border-border')}
+            >
               <p className="text-sm font-semibold">{listingTypeLabels[type]}</p>
               {outcome.ok ? (
                 <>

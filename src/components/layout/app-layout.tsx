@@ -2,7 +2,14 @@ import { LogOut, Menu, UserRound } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { useAuth, useProfile } from '@/providers/auth'
@@ -86,7 +93,10 @@ export function AppLayout() {
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[260px_1fr]">
-      <a href="#conteudo" className="sr-only z-50 rounded-md bg-primary px-3 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-2 focus:left-2">
+      <a
+        href="#conteudo"
+        className="sr-only z-50 rounded-md bg-primary px-3 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+      >
         Pular para o conteúdo
       </a>
 

@@ -57,14 +57,25 @@ export function CalculatorForm({ value, onChange, categories, rules, mode }: Cal
                 Tipo de anúncio
               </p>
               <InfoTip term="Clássico x Premium">
-                No Clássico a comissão é menor e o comprador parcela com juros. No Premium a comissão é maior, o comprador parcela sem juros e o anúncio
-                ganha mais exposição.
+                No Clássico a comissão é menor e o comprador parcela com juros. No Premium a comissão é maior, o comprador parcela sem juros e o anúncio ganha
+                mais exposição.
               </InfoTip>
             </div>
-            <RadioCards aria-labelledby="listing-type-label" value={value.listingType} onValueChange={(v) => set('listingType', v)} options={listingTypeOptions} />
+            <RadioCards
+              aria-labelledby="listing-type-label"
+              value={value.listingType}
+              onValueChange={(v) => set('listingType', v)}
+              options={listingTypeOptions}
+            />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Categoria" htmlFor="category" help={help.commission} helpTerm="Comissão" hint={tableRule ? `Comissão de referência: ${formatPercent(tableRule.percent, 2)}` : undefined}>
+            <Field
+              label="Categoria"
+              htmlFor="category"
+              help={help.commission}
+              helpTerm="Comissão"
+              hint={tableRule ? `Comissão de referência: ${formatPercent(tableRule.percent, 2)}` : undefined}
+            >
               <NativeSelect id="category" value={value.categoryId ?? ''} onChange={(e) => set('categoryId', e.target.value || null)}>
                 <option value="">Escolha a categoria</option>
                 {categories.map((c) => (
@@ -74,7 +85,14 @@ export function CalculatorForm({ value, onChange, categories, rules, mode }: Cal
                 ))}
               </NativeSelect>
             </Field>
-            <Field label="Comissão exata" htmlFor="commission-override" optional help={help.commissionOverride} helpTerm="Comissão exata" hint="Deixe vazio para usar a referência.">
+            <Field
+              label="Comissão exata"
+              htmlFor="commission-override"
+              optional
+              help={help.commissionOverride}
+              helpTerm="Comissão exata"
+              hint="Deixe vazio para usar a referência."
+            >
               <DecimalInput id="commission-override" suffix="%" value={value.commissionOverride} onValueChange={(v) => set('commissionOverride', v)} />
             </Field>
           </div>
@@ -101,7 +119,14 @@ export function CalculatorForm({ value, onChange, categories, rules, mode }: Cal
               options={shippingOptions}
             />
           </div>
-          <Field label="Custo de envio pago por você" htmlFor="shipping-cost" help={help.shippingCost} helpTerm="Custo de envio" hint="Por unidade. Confira no anúncio do Mercado Livre." className="sm:max-w-xs">
+          <Field
+            label="Custo de envio pago por você"
+            htmlFor="shipping-cost"
+            help={help.shippingCost}
+            helpTerm="Custo de envio"
+            hint="Por unidade. Confira no anúncio do Mercado Livre."
+            className="sm:max-w-xs"
+          >
             <DecimalInput id="shipping-cost" prefix="R$" value={value.shippingCost} onValueChange={(v) => set('shippingCost', v)} placeholder="0,00" />
           </Field>
 

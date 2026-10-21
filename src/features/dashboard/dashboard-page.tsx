@@ -1,8 +1,9 @@
-import { ArrowRight, Calculator, type LucideIcon } from 'lucide-react'
+import { ArrowRight, BookOpen, Calculator, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Highlight, PageHeader } from '@/components/common/page-header'
 import { Card } from '@/components/ui/card'
 import { useProfile } from '@/providers/auth'
+import { JourneyCard } from './journey-card'
 
 function firstName(name: string | undefined) {
   return name?.trim().split(/\s+/)[0] ?? ''
@@ -15,7 +16,10 @@ interface Shortcut {
   icon: LucideIcon
 }
 
-const shortcuts: Shortcut[] = [{ to: '/calculadora', title: 'Calculadora de lucro', description: 'Veja quanto sobra em cada venda.', icon: Calculator }]
+const shortcuts: Shortcut[] = [
+  { to: '/calculadora', title: 'Calculadora de lucro', description: 'Veja quanto sobra em cada venda.', icon: Calculator },
+  { to: '/glossario', title: 'Glossário', description: 'Termos do Mercado Livre explicados.', icon: BookOpen },
+]
 
 export default function DashboardPage() {
   const { data: profile } = useProfile()
@@ -31,16 +35,19 @@ export default function DashboardPage() {
         }
         description="Aqui você acompanha sua jornada no Mercado Livre."
       />
-      <section aria-labelledby="atalhos" className="space-y-3">
-        <h2 id="atalhos" className="text-xl">
-          Atalhos
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {shortcuts.map((s) => (
-            <ShortcutCard key={s.to} {...s} />
-          ))}
-        </div>
-      </section>
+      <div className="space-y-8">
+        <JourneyCard />
+        <section aria-labelledby="atalhos" className="space-y-3">
+          <h2 id="atalhos" className="text-xl">
+            Atalhos
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {shortcuts.map((s) => (
+              <ShortcutCard key={s.to} {...s} />
+            ))}
+          </div>
+        </section>
+      </div>
     </>
   )
 }

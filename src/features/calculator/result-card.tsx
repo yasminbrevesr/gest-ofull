@@ -8,7 +8,21 @@ import { help, listingTypeLabels, shippingLabels } from './labels'
 import { MarginBadge, statusSurface } from './margin-indicator'
 import type { CalculatorInputs } from './engine'
 
-function Row({ label, value, help: helpText, strong, minus, className }: { label: ReactNode; value: number; help?: string; strong?: boolean; minus?: boolean; className?: string }) {
+function Row({
+  label,
+  value,
+  help: helpText,
+  strong,
+  minus,
+  className,
+}: {
+  label: ReactNode
+  value: number
+  help?: string
+  strong?: boolean
+  minus?: boolean
+  className?: string
+}) {
   return (
     <div className={cn('flex items-center justify-between gap-3 py-1.5 text-sm', strong && 'font-semibold', className)}>
       <span className="flex items-center gap-1 text-left">
@@ -31,7 +45,9 @@ export function ResultCard({ result, inputs }: { result: ProfitResult; inputs: C
       <div className={cn('space-y-3 border-b p-5', statusSurface[result.status])}>
         <MarginBadge status={result.status} />
         <div>
-          <p className="text-sm text-muted-foreground dark:text-foreground/80">{multiple ? `Lucro líquido (${result.quantity} unidades)` : 'Lucro líquido por venda'}</p>
+          <p className="text-sm text-muted-foreground dark:text-foreground/80">
+            {multiple ? `Lucro líquido (${result.quantity} unidades)` : 'Lucro líquido por venda'}
+          </p>
           <p className="tabular font-serif text-4xl font-semibold" aria-live="polite">
             {formatCurrency(result.netProfit)}
           </p>

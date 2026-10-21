@@ -35,7 +35,12 @@ createRoot(document.getElementById('root')!).render(
         <AuthProvider>
           <ThemeProvider>
             <App />
-            <Toaster position="top-center" richColors={false} closeButton toastOptions={{ classNames: { toast: 'font-sans !rounded-lg !border-border !bg-card !text-card-foreground' } }} />
+            <Toaster
+              position="top-center"
+              richColors={false}
+              closeButton
+              toastOptions={{ classNames: { toast: 'font-sans !rounded-lg !border-border !bg-card !text-card-foreground' } }}
+            />
           </ThemeProvider>
         </AuthProvider>
       </QueryClientProvider>

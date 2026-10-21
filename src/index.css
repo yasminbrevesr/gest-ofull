@@ -195,3 +195,13 @@
     font-weight: 600;
   }
 }
+
+/* No tema escuro, a caixa de destaque fica manteiga sólida com texto grafite. */
+.dark .prose-guide blockquote {
+  background-color: var(--butter);
+  color: var(--on-accent);
+}
+.dark .prose-guide blockquote strong,
+.dark .prose-guide blockquote a {
+  color: var(--on-accent);
+}

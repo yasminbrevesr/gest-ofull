@@ -13,6 +13,9 @@ const DashboardPage = lazy(() => import('@/features/dashboard/dashboard-page'))
 const ProfilePage = lazy(() => import('@/features/profile/profile-page'))
 const CalculatorPage = lazy(() => import('@/features/calculator/calculator-page'))
 const SimulationsPage = lazy(() => import('@/features/calculator/simulations-page'))
+const JourneyPage = lazy(() => import('@/features/journey/journey-page'))
+const StepPage = lazy(() => import('@/features/journey/step-page'))
+const GlossaryPage = lazy(() => import('@/features/glossary/glossary-page'))
 const NotFoundPage = lazy(() => import('@/features/not-found-page'))
 const TermsPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.TermsPage })))
 const PrivacyPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.PrivacyPage })))
@@ -22,18 +25,48 @@ export function App() {
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Suspense fallback={<FullPageLoading />}>
         <Routes>
-          <Route path="/entrar" element={<PublicOnly><LoginPage /></PublicOnly>} />
-          <Route path="/cadastro" element={<PublicOnly><SignupPage /></PublicOnly>} />
+          <Route
+            path="/entrar"
+            element={
+              <PublicOnly>
+                <LoginPage />
+              </PublicOnly>
+            }
+          />
+          <Route
+            path="/cadastro"
+            element={
+              <PublicOnly>
+                <SignupPage />
+              </PublicOnly>
+            }
+          />
           <Route path="/recuperar-senha" element={<ForgotPasswordPage />} />
           <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
           <Route path="/termos" element={<TermsPage />} />
           <Route path="/privacidade" element={<PrivacyPage />} />
-          <Route path="/boas-vindas" element={<RequireAuth allowOnboarding><OnboardingPage /></RequireAuth>} />
+          <Route
+            path="/boas-vindas"
+            element={
+              <RequireAuth allowOnboarding>
+                <OnboardingPage />
+              </RequireAuth>
+            }
+          />
 
-          <Route element={<RequireAuth><AppLayout /></RequireAuth>}>
+          <Route
+            element={
+              <RequireAuth>
+                <AppLayout />
+              </RequireAuth>
+            }
+          >
             <Route index element={<DashboardPage />} />
+            <Route path="jornada" element={<JourneyPage />} />
+            <Route path="jornada/:slug" element={<StepPage />} />
             <Route path="calculadora" element={<CalculatorPage />} />
             <Route path="calculadora/simulacoes" element={<SimulationsPage />} />
+            <Route path="glossario" element={<GlossaryPage />} />
             <Route path="perfil" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>

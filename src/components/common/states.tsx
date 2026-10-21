@@ -46,7 +46,17 @@ export function EmptyState({ icon, title, description, action, className }: Empt
   )
 }
 
-export function ErrorState({ error, onRetry, title = 'Não foi possível carregar', className }: { error: unknown; onRetry?: () => void; title?: string; className?: string }) {
+export function ErrorState({
+  error,
+  onRetry,
+  title = 'Não foi possível carregar',
+  className,
+}: {
+  error: unknown
+  onRetry?: () => void
+  title?: string
+  className?: string
+}) {
   return (
     <div role="alert" className={cn('flex flex-col items-center gap-3 rounded-xl border border-coral bg-coral/20 px-6 py-8 text-center', className)}>
       <CircleAlert className="size-7" aria-hidden />

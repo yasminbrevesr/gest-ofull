@@ -8,12 +8,7 @@ const DialogTrigger = DialogPrimitive.Trigger
 const DialogClose = DialogPrimitive.Close
 
 function DialogOverlay({ className, ...props }: ComponentProps<typeof DialogPrimitive.Overlay>) {
-  return (
-    <DialogPrimitive.Overlay
-      className={cn('fixed inset-0 z-50 bg-[#1f2a2e]/45 backdrop-blur-[1px]', className)}
-      {...props}
-    />
-  )
+  return <DialogPrimitive.Overlay className={cn('fixed inset-0 z-50 bg-[#1f2a2e]/45 backdrop-blur-[1px]', className)} {...props} />
 }
 
 function DialogContent({ className, children, ...props }: ComponentProps<typeof DialogPrimitive.Content>) {

@@ -2,7 +2,7 @@
 
 Plataforma web para quem quer **começar a vender no Mercado Livre**: ensina o
 passo a passo, calcula o lucro real de cada venda, controla o estoque e
-sincroniza o estoque com o Mercado Livre. *(nome provisório)*
+sincroniza o estoque com o Mercado Livre. _(nome provisório)_
 
 - **Frontend:** React + TypeScript + Vite + Tailwind (componentes no estilo shadcn/ui)
 - **Backend:** Supabase (Postgres com RLS, Auth, Storage e Edge Functions)
@@ -53,6 +53,6 @@ npm run build       # gera a versão de produção em dist/
 
 ## Segurança
 
-- Nenhuma chave secreta no código. O navegador usa só a *publishable key*.
+- Nenhuma chave secreta no código. O navegador usa só a _publishable key_.
 - RLS ativo em todas as tabelas: cada usuário só acessa os próprios dados.
 - O papel de administrador só pode ser dado pelo SQL Editor do Supabase.

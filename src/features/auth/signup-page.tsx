@@ -87,7 +87,14 @@ export default function SignupPage() {
           <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         </Field>
         <Field label="Senha" htmlFor="password" hint={`Mínimo de ${MIN_PASSWORD} caracteres.`}>
-          <PasswordInput id="password" autoComplete="new-password" required minLength={MIN_PASSWORD} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <PasswordInput
+            id="password"
+            autoComplete="new-password"
+            required
+            minLength={MIN_PASSWORD}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Field>
         <label htmlFor="terms" className="flex items-start gap-3 text-sm leading-relaxed">
           <Checkbox id="terms" checked={accepted} onCheckedChange={(v) => setAccepted(v === true)} className="mt-0.5" />

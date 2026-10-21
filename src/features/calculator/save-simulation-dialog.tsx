@@ -24,7 +24,17 @@ interface SaveSimulationDialogProps {
   productPicker?: (value: string | null, onChange: (id: string | null) => void) => ReactNode
 }
 
-export function SaveSimulationDialog({ open, onOpenChange, inputs, result, existingId, initialName, initialProductId, onSaved, productPicker }: SaveSimulationDialogProps) {
+export function SaveSimulationDialog({
+  open,
+  onOpenChange,
+  inputs,
+  result,
+  existingId,
+  initialName,
+  initialProductId,
+  onSaved,
+  productPicker,
+}: SaveSimulationDialogProps) {
   const save = useSaveSimulation()
   const [name, setName] = useState(initialName || `Simulação de ${formatDate(new Date())}`)
   const [productId, setProductId] = useState<string | null>(initialProductId ?? null)

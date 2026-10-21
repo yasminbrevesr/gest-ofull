@@ -12,7 +12,12 @@ export function ReferenceNote({ settings }: { settings: AppSettings }) {
       ) : (
         <>Valores de referência, ainda não conferidos pela equipe. Confira sempre no Mercado Livre.</>
       )}{' '}
-      <a href={settings.fees_source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold underline underline-offset-2">
+      <a
+        href={settings.fees_source_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 font-semibold underline underline-offset-2"
+      >
         Ver tarifas oficiais <ExternalLink className="size-3.5" />
       </a>
     </Alert>

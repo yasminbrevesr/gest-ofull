@@ -184,7 +184,8 @@ export function resolveCommissionRate(inputs: CalculatorInputs, ctx: CalcContext
 export function validateInputs(inputs: CalculatorInputs, { requirePrice = true } = {}): string | null {
   if (requirePrice && (inputs.salePrice == null || inputs.salePrice <= 0)) return 'Informe o preço de venda.'
   if (inputs.quantity == null || inputs.quantity < 1 || !Number.isInteger(inputs.quantity)) return 'A quantidade precisa ser um número inteiro a partir de 1.'
-  if (inputs.commissionOverride != null && (inputs.commissionOverride < 0 || inputs.commissionOverride >= 100)) return 'A comissão precisa estar entre 0% e 99%.'
+  if (inputs.commissionOverride != null && (inputs.commissionOverride < 0 || inputs.commissionOverride >= 100))
+    return 'A comissão precisa estar entre 0% e 99%.'
   if (inputs.taxRate != null && (inputs.taxRate < 0 || inputs.taxRate >= 100)) return 'O imposto precisa estar entre 0% e 99%.'
   const money = [inputs.productCost, inputs.shippingCost, inputs.packagingCost, inputs.adsCost, inputs.otherCosts]
   if (money.some((v) => v != null && v < 0)) return 'Os custos não podem ser negativos.'
@@ -201,7 +202,11 @@ export function calculateProfit(inputs: CalculatorInputs, ctx: CalcContext): Cal
   const today = ctx.today ?? todayInBrazil()
   const price = inputs.salePrice!
   const qty = inputs.quantity!
-  const feeRule = findFixedFeeRule(ctx.rules, { price, shippingMethod: inputs.shippingMethod, listingType: inputs.listingType, categoryId: inputs.categoryId }, today)
+  const feeRule = findFixedFeeRule(
+    ctx.rules,
+    { price, shippingMethod: inputs.shippingMethod, listingType: inputs.listingType, categoryId: inputs.categoryId },
+    today,
+  )
   const fee = fixedFeeValue(feeRule, price)
 
   const revenue = roundMoney(price * qty)
@@ -285,7 +290,11 @@ export function suggestPrice(inputs: CalculatorInputs, targetMargin: number, ctx
     for (let extra = 0; extra <= 3; extra++) candidates.add((cents + extra) / 100)
   }
   add(k / base) // faixa sem custo fixo
-  const feeRules = applicableFixedFeeRules(ctx.rules, { shippingMethod: inputs.shippingMethod, listingType: inputs.listingType, categoryId: inputs.categoryId }, today)
+  const feeRules = applicableFixedFeeRules(
+    ctx.rules,
+    { shippingMethod: inputs.shippingMethod, listingType: inputs.listingType, categoryId: inputs.categoryId },
+    today,
+  )
   for (const rule of feeRules) {
     if (rule.amount != null) add((k + rule.amount) / base)
     if (rule.max_percent_of_price != null && base - rule.max_percent_of_price / 100 > 0) add(k / (base - rule.max_percent_of_price / 100))
