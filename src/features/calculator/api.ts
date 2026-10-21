@@ -70,6 +70,17 @@ export function useSimulations() {
   })
 }
 
+export function useSimulationsForProduct(productId: string) {
+  return useQuery({
+    queryKey: ['simulations', 'produto', productId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('simulations').select('*').eq('product_id', productId).order('created_at', { ascending: false })
+      if (error) throw error
+      return data as Simulation[]
+    },
+  })
+}
+
 export function useSimulation(id: string | null) {
   return useQuery({
     queryKey: ['simulations', id],

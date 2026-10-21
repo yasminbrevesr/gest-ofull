@@ -1,9 +1,10 @@
-import { ArrowRight, BookOpen, Calculator, type LucideIcon } from 'lucide-react'
+import { ArrowRight, BookOpen, Calculator, Package, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Highlight, PageHeader } from '@/components/common/page-header'
 import { Card } from '@/components/ui/card'
 import { useProfile } from '@/providers/auth'
 import { JourneyCard } from './journey-card'
+import { LowStockCard } from './low-stock-card'
 
 function firstName(name: string | undefined) {
   return name?.trim().split(/\s+/)[0] ?? ''
@@ -16,14 +17,25 @@ interface Shortcut {
   icon: LucideIcon
 }
 
-const shortcuts: Shortcut[] = [
-  { to: '/calculadora', title: 'Calculadora de lucro', description: 'Veja quanto sobra em cada venda.', icon: Calculator },
-  { to: '/glossario', title: 'Glossário', description: 'Termos do Mercado Livre explicados.', icon: BookOpen },
-]
-
 export default function DashboardPage() {
   const { data: profile } = useProfile()
   const name = firstName(profile?.full_name)
+
+  const shortcuts: Shortcut[] = [
+    {
+      to: '/calculadora',
+      title: 'Calculadora de lucro',
+      description: profile?.has_products ? 'Veja quanto sobra em cada venda.' : 'Avalie se vale a pena antes de comprar o produto.',
+      icon: Calculator,
+    },
+    {
+      to: '/estoque',
+      title: 'Estoque',
+      description: profile?.has_products ? 'Cadastre seus produtos e controle as quantidades.' : 'Quando tiver produtos, cadastre aqui.',
+      icon: Package,
+    },
+    { to: '/glossario', title: 'Glossário', description: 'Termos do Mercado Livre explicados.', icon: BookOpen },
+  ]
 
   return (
     <>
@@ -47,6 +59,9 @@ export default function DashboardPage() {
             ))}
           </div>
         </section>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <LowStockCard />
+        </div>
       </div>
     </>
   )

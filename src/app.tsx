@@ -16,6 +16,11 @@ const SimulationsPage = lazy(() => import('@/features/calculator/simulations-pag
 const JourneyPage = lazy(() => import('@/features/journey/journey-page'))
 const StepPage = lazy(() => import('@/features/journey/step-page'))
 const GlossaryPage = lazy(() => import('@/features/glossary/glossary-page'))
+const StockPage = lazy(() => import('@/features/stock/stock-page'))
+const ProductFormPage = lazy(() => import('@/features/stock/product-form-page'))
+const ProductDetailPage = lazy(() => import('@/features/stock/product-detail-page'))
+const ImportPage = lazy(() => import('@/features/stock/import-page'))
+const MovementsPage = lazy(() => import('@/features/stock/movements-page'))
 const NotFoundPage = lazy(() => import('@/features/not-found-page'))
 const TermsPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.TermsPage })))
 const PrivacyPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.PrivacyPage })))
@@ -66,6 +71,12 @@ export function App() {
             <Route path="jornada/:slug" element={<StepPage />} />
             <Route path="calculadora" element={<CalculatorPage />} />
             <Route path="calculadora/simulacoes" element={<SimulationsPage />} />
+            <Route path="estoque" element={<StockPage />} />
+            <Route path="estoque/novo" element={<ProductFormPage />} />
+            <Route path="estoque/importar" element={<ImportPage />} />
+            <Route path="estoque/movimentacoes" element={<MovementsPage />} />
+            <Route path="estoque/:id" element={<ProductDetailPage />} />
+            <Route path="estoque/:id/editar" element={<ProductFormPage />} />
             <Route path="glossario" element={<GlossaryPage />} />
             <Route path="perfil" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
