@@ -16,8 +16,8 @@ interface CalculatorFormProps {
   onChange: (next: CalculatorInputs) => void
   categories: Category[]
   rules: FeeRule[]
-  /** No modo reverso o preço é o que queremos descobrir. */
-  mode: 'forward' | 'reverse'
+  /** Nos modos reverso e promoção o preço é o que queremos descobrir (na promoção, por unidade). */
+  mode: 'forward' | 'reverse' | 'promo'
 }
 
 export function CalculatorForm({ value, onChange, categories, rules, mode }: CalculatorFormProps) {
@@ -40,9 +40,11 @@ export function CalculatorForm({ value, onChange, categories, rules, mode }: Cal
           <Field label="Custo do produto" htmlFor="product-cost" hint="Quanto você paga por unidade.">
             <DecimalInput id="product-cost" prefix="R$" value={value.productCost} onValueChange={(v) => set('productCost', v)} placeholder="0,00" />
           </Field>
-          <Field label="Quantidade" htmlFor="quantity" hint="Unidades na venda.">
-            <DecimalInput id="quantity" decimals={0} value={value.quantity} onValueChange={(v) => set('quantity', v)} />
-          </Field>
+          {mode !== 'promo' && (
+            <Field label="Quantidade" htmlFor="quantity" hint="Unidades na venda.">
+              <DecimalInput id="quantity" decimals={0} value={value.quantity} onValueChange={(v) => set('quantity', v)} />
+            </Field>
+          )}
         </CardContent>
       </Card>
 

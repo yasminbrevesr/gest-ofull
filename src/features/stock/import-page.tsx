@@ -60,7 +60,7 @@ export default function ImportPage() {
         description="Cadastre ou atualize vários produtos de uma vez com um arquivo CSV (pode ser salvo pelo Excel ou Google Planilhas)."
       />
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="space-y-6">
           {!parsed && (
             <Card>

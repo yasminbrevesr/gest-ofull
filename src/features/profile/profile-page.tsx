@@ -38,7 +38,7 @@ export default function ProfilePage() {
       ) : profile.error || !profile.data ? (
         <ErrorState error={profile.error} onRetry={() => profile.refetch()} />
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <ProfileForm key={profile.data.updated_at} profile={profile.data} />
           <div className="space-y-6">
             <AppearanceCard />

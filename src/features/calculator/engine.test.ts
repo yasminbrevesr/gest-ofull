@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { calculateProfit, emptyInputs, suggestPrice, type CalcContext, type CalculatorInputs, type FeeRule } from './engine'
+import { calculateProfit, emptyInputs, promotionPrice, suggestPrice, type CalcContext, type CalculatorInputs, type FeeRule } from './engine'
 
 const TODAY = '2026-10-21'
 let seq = 0
@@ -154,5 +154,64 @@ describe('suggestPrice (modo reverso)', () => {
 
   it('avisa quando a margem é impossível', () => {
     expect(suggestPrice(inputs({ productCost: 10, taxRate: 50 }), 40, ctx)).toMatchObject({ ok: false })
+  })
+})
+
+describe('promotionPrice (promoção)', () => {
+  function promo(over: Partial<CalculatorInputs>, kind: 'received' | 'profit' | 'promo_price', value: number, discount: number) {
+    const outcome = promotionPrice(inputs(over), { kind, value }, discount, ctx)
+    if (!outcome.ok) throw new Error(outcome.error)
+    return outcome
+  }
+
+  it('quero receber R$ 50 com 20% de desconto', () => {
+    const r = promo({ shippingMethod: 'coleta' }, 'received', 50, 20)
+    expect(r.promoPrice).toBe(56.82)
+    expect(r.listPrice).toBe(71.03)
+    expect(r.result.received).toBeGreaterThanOrEqual(50)
+    expect(r.result.received).toBeLessThan(50.02)
+    expect(r.fullPriceResult.salePrice).toBe(71.03)
+  })
+
+  it('considera o custo fixo da faixa do preço com desconto', () => {
+    const r = promo({ shippingMethod: 'flex' }, 'received', 30, 10)
+    expect(r.promoPrice).toBe(41.65)
+    expect(r.result.fixedFee).toBe(6.65)
+    expect(r.result.received).toBe(30)
+  })
+
+  it('aproveita o fim do custo fixo em R$ 79', () => {
+    expect(promo({ shippingMethod: 'flex' }, 'received', 62, 10).promoPrice).toBe(79)
+  })
+
+  it('alvo de lucro líquido desconta custos e imposto', () => {
+    // Lucro de R$ 10 exige R$ 35,72; o preço cheio arredondado para cima (42,03)
+    // com 15% de desconto dá R$ 35,73 — nunca abaixo do necessário.
+    const r = promo({ productCost: 20, taxRate: 4, shippingMethod: 'coleta' }, 'profit', 10, 15)
+    expect(r.listPrice).toBe(42.03)
+    expect(r.promoPrice).toBe(35.73)
+    expect(r.result.netProfit).toBeGreaterThanOrEqual(10)
+    expect(r.result.netProfit).toBeLessThan(10.02)
+  })
+
+  it('alvo de preço final só calcula o preço cheio', () => {
+    const r = promo({}, 'promo_price', 50, 30)
+    expect(r.listPrice).toBe(71.43)
+    expect(r.promoPrice).toBe(50)
+  })
+
+  it('o preço cheio com o desconto nunca fica abaixo do preço calculado', () => {
+    for (const discount of [5, 7, 12.5, 33, 45, 60]) {
+      const r = promo({ shippingMethod: 'coleta' }, 'received', 47.3, discount)
+      expect(Math.round(r.listPrice * (1 - discount / 100) * 100) / 100).toBeGreaterThanOrEqual(r.promoPrice)
+      expect(r.result.received).toBeGreaterThanOrEqual(47.3)
+    }
+  })
+
+  it('avisa quando faltam dados ou o alvo é impossível', () => {
+    expect(promotionPrice(inputs({}), { kind: 'received', value: 50 }, null, ctx)).toMatchObject({ ok: false })
+    expect(promotionPrice(inputs({}), { kind: 'received', value: 50 }, 100, ctx)).toMatchObject({ ok: false })
+    expect(promotionPrice(inputs({}), { kind: 'received', value: null }, 10, ctx)).toMatchObject({ ok: false })
+    expect(promotionPrice(inputs({ taxRate: 90 }), { kind: 'profit', value: 10 }, 10, ctx)).toMatchObject({ ok: false })
   })
 })

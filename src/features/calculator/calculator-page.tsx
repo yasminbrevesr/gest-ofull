@@ -1,4 +1,4 @@
-import { Calculator, History, RotateCcw, Save, Target } from 'lucide-react'
+import { Calculator, History, RotateCcw, Save, Tag, Target } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { DecimalInput } from '@/components/common/decimal-input'
@@ -15,13 +15,14 @@ import { useProfile } from '@/providers/auth'
 import { useFeeData, useSimulation, type FeeData, type Simulation } from './api'
 import { CalculatorForm } from './calculator-form'
 import { ComparisonCard } from './comparison-card'
-import { calculateProfit, emptyInputs, suggestPrice, type CalcContext, type CalculatorInputs, type ListingType } from './engine'
+import { calculateProfit, emptyInputs, promotionPrice, suggestPrice, type CalcContext, type CalculatorInputs, type ListingType } from './engine'
 import { listingTypeLabels } from './labels'
 import { MarginBadge } from './margin-indicator'
 import { ReferenceNote } from './reference-note'
 import { ResultCard } from './result-card'
 import { SaveSimulationDialog } from './save-simulation-dialog'
 import { ProductPicker, type CalculatorPrefill } from './product-link'
+import { FairDiscountNote, PromoMobileSummary, PromotionResult, PromotionTargetCard, type PromoTarget } from './promotion-panel'
 
 export default function CalculatorPage() {
   const [params] = useSearchParams()
@@ -77,6 +78,8 @@ function readPrefill(params: URLSearchParams): CalculatorPrefill | null {
   return { productId, name: params.get('nome'), productCost: num('custo'), salePrice: num('preco'), weightGrams: num('peso') }
 }
 
+type CalcMode = 'forward' | 'reverse' | 'promo'
+
 interface WorkspaceProps {
   feeData: FeeData
   defaultTax: number
@@ -86,7 +89,7 @@ interface WorkspaceProps {
 
 function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: WorkspaceProps) {
   const [, setParams] = useSearchParams()
-  const [mode, setMode] = useState<'forward' | 'reverse'>('forward')
+  const [mode, setMode] = useState<CalcMode>('forward')
   const [inputs, setInputs] = useState<CalculatorInputs>(() => {
     if (simulation) return { ...emptyInputs(defaultTax), ...simulation.inputs }
     const base = emptyInputs(defaultTax)
@@ -94,11 +97,13 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
     return base
   })
   const [targetMargin, setTargetMargin] = useState<number | null>(20)
+  const [promo, setPromo] = useState<PromoTarget>({ kind: 'received', value: null, discount: 10 })
   const [saveOpen, setSaveOpen] = useState(false)
 
   const ctx: CalcContext = useMemo(() => ({ rules: feeData.rules, healthyMargin: feeData.settings.margin_healthy_pct }), [feeData])
   const forward = useMemo(() => calculateProfit(inputs, ctx), [inputs, ctx])
   const reverse = useMemo(() => (targetMargin == null ? null : suggestPrice(inputs, targetMargin, ctx)), [inputs, targetMargin, ctx])
+  const promotion = useMemo(() => promotionPrice(inputs, { kind: promo.kind, value: promo.value }, promo.discount, ctx), [inputs, promo, ctx])
   const current = mode === 'forward' ? forward : reverse && reverse.ok ? { ok: true as const, result: reverse.result } : null
 
   function applySuggestedPrice(price: number, listingType: ListingType) {
@@ -122,13 +127,16 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Tabs value={mode} onValueChange={(v) => setMode(v as 'forward' | 'reverse')}>
+        <Tabs value={mode} onValueChange={(v) => setMode(v as CalcMode)}>
           <TabsList>
             <TabsTrigger value="forward">
               <Calculator /> Quanto vou lucrar?
             </TabsTrigger>
             <TabsTrigger value="reverse">
               <Target /> Qual preço cobrar?
+            </TabsTrigger>
+            <TabsTrigger value="promo">
+              <Tag /> Promoção
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -157,12 +165,31 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
               </CardContent>
             </Card>
           )}
+          {mode === 'promo' && <PromotionTargetCard value={promo} onChange={setPromo} />}
           <CalculatorForm value={inputs} onChange={setInputs} categories={feeData.categories} rules={feeData.rules} mode={mode} />
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
           {mode === 'reverse' && reverse?.ok && <SuggestedPrices inputs={inputs} targetMargin={targetMargin!} ctx={ctx} onApply={applySuggestedPrice} />}
-          {current?.ok ? (
+          {mode === 'promo' ? (
+            promotion.ok ? (
+              <>
+                <PromotionResult
+                  outcome={promotion}
+                  kind={promo.kind}
+                  target={promo.value ?? 0}
+                  onOpenInCalculator={() => {
+                    setInputs({ ...inputs, salePrice: promotion.promoPrice, quantity: 1 })
+                    setMode('forward')
+                  }}
+                />
+                <FairDiscountNote />
+                <ResultCard result={promotion.result} inputs={{ ...inputs, salePrice: promotion.promoPrice, quantity: 1 }} />
+              </>
+            ) : (
+              <EmptyState icon={<Tag />} title="Preencha para ver o preço da promoção" description={promotion.error} />
+            )
+          ) : current?.ok ? (
             <>
               <ResultCard result={current.result} inputs={mode === 'reverse' && reverse?.ok ? { ...inputs, salePrice: reverse.price } : inputs} />
               {mode === 'forward' && <ComparisonCard inputs={inputs} ctx={ctx} onPick={(type) => setInputs({ ...inputs, listingType: type })} />}
@@ -183,6 +210,10 @@ function CalculatorWorkspace({ feeData, defaultTax, simulation, prefill }: Works
           )}
         </aside>
       </div>
+
+      {mode === 'promo' && promotion.ok && (
+        <PromoMobileSummary listPrice={promotion.listPrice} promoPrice={promotion.promoPrice} discountPct={promotion.discountPct} />
+      )}
 
       {mode === 'forward' && forward.ok && (
         <MobileSummary netProfit={forward.result.netProfit} marginPct={forward.result.marginPct} status={forward.result.status} />

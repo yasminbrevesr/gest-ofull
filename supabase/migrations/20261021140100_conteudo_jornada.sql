@@ -290,7 +290,8 @@ O erro mais comum de quem começa é olhar só "preço de venda menos preço de 
 3. Veja o **lucro líquido**, a **margem** e o **ROI**. Verde é saudável; amarelo é apertado; vermelho é prejuízo.
 4. Compare **Clássico x Premium**.
 5. Não sabe o preço? Use **"Qual preço cobrar?"**: diga a margem que quer e a calculadora sugere o preço.
-6. **Salve a simulação** e vincule ao produto do estoque.
+6. Vai fazer promoção? Na aba **"Promoção"**, diga quanto quer receber (ou lucrar) e o desconto: a calculadora mostra o preço cheio do anúncio.
+7. **Salve a simulação** e vincule ao produto do estoque.
 
 > Regra prática: margem abaixo de 15% deixa pouco espaço para imprevistos (devoluções, promoções, aumento de tarifa).
 $md$

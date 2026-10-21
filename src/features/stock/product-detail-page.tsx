@@ -136,7 +136,7 @@ function ProductDetail({ product }: { product: Product }) {
         <Tile label="Margem bruta" value={formatPercent(grossMargin)} hint="Sem tarifas. Use a calculadora para o lucro real." />
       </dl>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-6">
           {product.has_variants && (
             <Card>

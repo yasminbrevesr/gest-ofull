@@ -2,7 +2,10 @@ import { Tabs as TabsPrimitive } from 'radix-ui'
 import type { ComponentProps } from 'react'
 import { cn } from '@/lib/utils'
 
-const Tabs = TabsPrimitive.Root
+/** min-w-0: dentro de linhas flex, a lista de abas rola sozinha em vez de alargar a página. */
+function Tabs({ className, ...props }: ComponentProps<typeof TabsPrimitive.Root>) {
+  return <TabsPrimitive.Root className={cn('max-w-full min-w-0', className)} {...props} />
+}
 
 function TabsList({ className, ...props }: ComponentProps<typeof TabsPrimitive.List>) {
   return (

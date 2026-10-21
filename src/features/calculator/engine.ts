@@ -259,57 +259,144 @@ export function calculateProfit(inputs: CalculatorInputs, ctx: CalcContext): Cal
 export type PriceOutcome = { ok: true; price: number; result: ProfitResult } | { ok: false; error: string }
 
 /**
- * Modo reverso: menor preço de venda que atinge a margem desejada (%).
- * O custo fixo muda por faixa de preço, então testamos a solução de cada
- * faixa e os limites das faixas, e conferimos tudo com calculateProfit.
+ * Alvo linear por unidade: a·P − custoFixo(P) − b ≥ value.
+ * (margem, valor recebido do Mercado Livre e lucro líquido cabem nesse formato)
  */
-export function suggestPrice(inputs: CalculatorInputs, targetMargin: number, ctx: CalcContext): PriceOutcome {
-  const invalid = validateInputs(inputs, { requirePrice: false })
-  if (invalid) return { ok: false, error: invalid }
-  if (targetMargin < 0 || targetMargin >= 100) return { ok: false, error: 'A margem desejada precisa estar entre 0% e 99%.' }
-  const commission = resolveCommissionRate(inputs, ctx)
-  if (!commission) return { ok: false, error: 'Não há comissão cadastrada para esta categoria e tipo de anúncio. Informe a comissão manualmente.' }
+interface LinearTarget {
+  a: number
+  b: number
+  value: number
+}
 
+/**
+ * Menor preço (por unidade) que atinge o alvo. O custo fixo muda por faixa de
+ * preço, então testamos a solução de cada faixa e os limites das faixas, e
+ * conferimos tudo com calculateProfit (`meets`).
+ */
+function solveMinPrice(inputs: CalculatorInputs, ctx: CalcContext, { a, b, value }: LinearTarget, meets: (r: ProfitResult) => boolean): number | null {
   const today = ctx.today ?? todayInBrazil()
-  const c = commission.rate / 100
-  const t = n(inputs.taxRate) / 100
-  const m = targetMargin / 100
-  // Custos por unidade que não dependem do preço.
-  const k = n(inputs.productCost) + n(inputs.shippingCost) + n(inputs.packagingCost) + n(inputs.adsCost) + n(inputs.otherCosts)
-  const base = 1 - c - t - m
-  if (base <= 0) {
-    return { ok: false, error: 'Com essa comissão e esse imposto, não existe preço que alcance essa margem. Tente uma margem menor.' }
-  }
-
   const candidates = new Set<number>()
   const add = (p: number) => {
     if (!Number.isFinite(p) || p <= 0) return
     const cents = Math.ceil(p * 100 - 1e-6)
     // Alguns centavos acima também, porque o arredondamento de cada parcela
-    // (comissão, imposto…) pode deixar a margem um fio abaixo do alvo.
+    // (comissão, imposto…) pode deixar o resultado um fio abaixo do alvo.
     for (let extra = 0; extra <= 3; extra++) candidates.add((cents + extra) / 100)
   }
-  add(k / base) // faixa sem custo fixo
+  add((value + b) / a) // faixa sem custo fixo
   const feeRules = applicableFixedFeeRules(
     ctx.rules,
     { shippingMethod: inputs.shippingMethod, listingType: inputs.listingType, categoryId: inputs.categoryId },
     today,
   )
   for (const rule of feeRules) {
-    if (rule.amount != null) add((k + rule.amount) / base)
-    if (rule.max_percent_of_price != null && base - rule.max_percent_of_price / 100 > 0) add(k / (base - rule.max_percent_of_price / 100))
+    if (rule.amount != null) add((value + b + rule.amount) / a)
+    if (rule.max_percent_of_price != null && a - rule.max_percent_of_price / 100 > 0) add((value + b) / (a - rule.max_percent_of_price / 100))
     if (rule.price_min != null) add(rule.price_min)
     if (rule.price_max != null) add(rule.price_max)
   }
   add(0.01)
 
-  const sorted = [...candidates].sort((a, b) => a - b)
-  for (const price of sorted) {
+  for (const price of [...candidates].sort((x, y) => x - y)) {
     const outcome = calculateProfit({ ...inputs, salePrice: price, quantity: 1 }, ctx)
-    if (outcome.ok && outcome.result.marginPct >= targetMargin - 1e-9) {
-      const full = calculateProfit({ ...inputs, salePrice: price }, ctx)
-      if (full.ok) return { ok: true, price, result: full.result }
-    }
+    if (outcome.ok && meets(outcome.result)) return price
   }
-  return { ok: false, error: 'Não foi possível encontrar um preço para essa margem.' }
+  return null
+}
+
+/** Custos por unidade que não dependem do preço. */
+const fixedUnitCosts = (inputs: CalculatorInputs) =>
+  n(inputs.productCost) + n(inputs.shippingCost) + n(inputs.packagingCost) + n(inputs.adsCost) + n(inputs.otherCosts)
+
+const NO_COMMISSION = 'Não há comissão cadastrada para esta categoria e tipo de anúncio. Informe a comissão manualmente.'
+
+/** Modo reverso: menor preço de venda que atinge a margem desejada (%). */
+export function suggestPrice(inputs: CalculatorInputs, targetMargin: number, ctx: CalcContext): PriceOutcome {
+  const invalid = validateInputs(inputs, { requirePrice: false })
+  if (invalid) return { ok: false, error: invalid }
+  if (targetMargin < 0 || targetMargin >= 100) return { ok: false, error: 'A margem desejada precisa estar entre 0% e 99%.' }
+  const commission = resolveCommissionRate(inputs, ctx)
+  if (!commission) return { ok: false, error: NO_COMMISSION }
+
+  const a = 1 - commission.rate / 100 - n(inputs.taxRate) / 100 - targetMargin / 100
+  if (a <= 0) {
+    return { ok: false, error: 'Com essa comissão e esse imposto, não existe preço que alcance essa margem. Tente uma margem menor.' }
+  }
+  const price = solveMinPrice(inputs, ctx, { a, b: fixedUnitCosts(inputs), value: 0 }, (r) => r.marginPct >= targetMargin - 1e-9)
+  if (price == null) return { ok: false, error: 'Não foi possível encontrar um preço para essa margem.' }
+  const full = calculateProfit({ ...inputs, salePrice: price }, ctx)
+  return full.ok ? { ok: true, price, result: full.result } : full
+}
+
+/**
+ * Alvo da promoção:
+ * - received: valor que cai na conta (depois de comissão, custo fixo e frete);
+ * - profit: lucro líquido (depois também de impostos e custos);
+ * - promo_price: o preço final que o comprador paga.
+ */
+export type PromoTargetKind = 'received' | 'profit' | 'promo_price'
+
+export type PromoOutcome =
+  | {
+      ok: true
+      /** Preço cheio do anúncio ("de"). */
+      listPrice: number
+      /** Preço com desconto ("por"), o que o comprador paga. */
+      promoPrice: number
+      discountPct: number
+      /** Resultado de uma venda com desconto. */
+      result: ProfitResult
+      /** Resultado de uma venda pelo preço cheio, sem desconto. */
+      fullPriceResult: ProfitResult
+    }
+  | { ok: false; error: string }
+
+const cents = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100
+
+/**
+ * Promoção: quanto colocar de preço cheio para, com `discountPct`% de
+ * desconto, chegar ao alvo (por unidade).
+ */
+export function promotionPrice(
+  inputs: CalculatorInputs,
+  target: { kind: PromoTargetKind; value: number | null },
+  discountPct: number | null,
+  ctx: CalcContext,
+): PromoOutcome {
+  const unit = { ...inputs, quantity: 1 }
+  const invalid = validateInputs(unit, { requirePrice: false })
+  if (invalid) return { ok: false, error: invalid }
+  if (discountPct == null || discountPct <= 0 || discountPct >= 100) return { ok: false, error: 'Informe o desconto da promoção (entre 1% e 99%).' }
+  if (target.value == null || target.value < 0 || (target.kind !== 'profit' && target.value === 0)) {
+    return { ok: false, error: 'Informe o valor que você quer alcançar.' }
+  }
+  const commission = resolveCommissionRate(unit, ctx)
+  if (!commission) return { ok: false, error: NO_COMMISSION }
+  const c = commission.rate / 100
+  const value = target.value
+
+  let promoPrice: number | null
+  if (target.kind === 'promo_price') {
+    promoPrice = cents(value)
+  } else if (target.kind === 'received') {
+    promoPrice = solveMinPrice(unit, ctx, { a: 1 - c, b: n(unit.shippingCost), value }, (r) => r.received >= value - 1e-9)
+  } else {
+    const a = 1 - c - n(unit.taxRate) / 100
+    if (a <= 0) return { ok: false, error: 'Com essa comissão e esse imposto, não existe preço que alcance esse lucro.' }
+    promoPrice = solveMinPrice(unit, ctx, { a, b: fixedUnitCosts(unit), value }, (r) => r.netProfit >= value - 1e-9)
+  }
+  if (promoPrice == null) return { ok: false, error: 'Não foi possível encontrar um preço para esse valor.' }
+
+  // Preço cheio arredondado para cima: com o desconto (antes de qualquer
+  // arredondamento), o comprador paga pelo menos o preço calculado.
+  const factor = 1 - discountPct / 100
+  let listPrice = Math.ceil((promoPrice / factor) * 100 - 1e-6) / 100
+  while (listPrice * factor < promoPrice - 1e-9) listPrice = cents(listPrice + 0.01)
+  const finalPrice = cents(listPrice * factor)
+
+  const promo = calculateProfit({ ...unit, salePrice: finalPrice }, ctx)
+  const full = calculateProfit({ ...unit, salePrice: listPrice }, ctx)
+  if (!promo.ok) return promo
+  if (!full.ok) return full
+  return { ok: true, listPrice, promoPrice: finalPrice, discountPct, result: promo.result, fullPriceResult: full.result }
 }
