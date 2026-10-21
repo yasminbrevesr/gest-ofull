@@ -3,3 +3,18 @@
 # segredo do agendador ou notificação do Mercado Livre), por isso
 # verify_jwt = false. Ver docs/configuracao.md.
 project_id = "gestao-decola-full"
+
+[functions.ml-oauth-start]
+verify_jwt = false
+
+[functions.ml-oauth-exchange]
+verify_jwt = false
+
+[functions.ml-disconnect]
+verify_jwt = false
+
+[functions.ml-import-listings]
+verify_jwt = false
+
+[functions.ml-refresh-tokens]
+verify_jwt = false

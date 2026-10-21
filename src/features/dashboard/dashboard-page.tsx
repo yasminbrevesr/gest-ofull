@@ -1,10 +1,12 @@
-import { ArrowRight, BookOpen, Calculator, Package, type LucideIcon } from 'lucide-react'
+import { ArrowRight, Calculator, Package, Store, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Highlight, PageHeader } from '@/components/common/page-header'
 import { Card } from '@/components/ui/card'
 import { useProfile } from '@/providers/auth'
+import { useMlConnection } from '../mercadolivre/api'
 import { JourneyCard } from './journey-card'
 import { LowStockCard } from './low-stock-card'
+import { MlCard } from './ml-card'
 
 function firstName(name: string | undefined) {
   return name?.trim().split(/\s+/)[0] ?? ''
@@ -19,6 +21,7 @@ interface Shortcut {
 
 export default function DashboardPage() {
   const { data: profile } = useProfile()
+  const { data: connection } = useMlConnection()
   const name = firstName(profile?.full_name)
 
   const shortcuts: Shortcut[] = [
@@ -34,7 +37,9 @@ export default function DashboardPage() {
       description: profile?.has_products ? 'Cadastre seus produtos e controle as quantidades.' : 'Quando tiver produtos, cadastre aqui.',
       icon: Package,
     },
-    { to: '/glossario', title: 'Glossário', description: 'Termos do Mercado Livre explicados.', icon: BookOpen },
+    connection
+      ? { to: '/mercado-livre', title: 'Mercado Livre', description: 'Anúncios, vínculos e sincronização.', icon: Store }
+      : { to: '/mercado-livre', title: 'Conectar Mercado Livre', description: 'Importe anúncios e sincronize o estoque.', icon: Store },
   ]
 
   return (
@@ -60,6 +65,7 @@ export default function DashboardPage() {
           </div>
         </section>
         <div className="grid gap-6 lg:grid-cols-2">
+          <MlCard />
           <LowStockCard />
         </div>
       </div>

@@ -131,7 +131,76 @@ os links de cada etapa antes de abrir para o público. O conteúdo é em markdow
 > Pela área administrativa do app (Administração → Jornada / Glossário) dá para
 > editar com pré-visualização, sem mexer no banco.
 
-## 10. Antes de abrir para o público
+## 10. Integração com o Mercado Livre
+
+### 10.1 Criar o aplicativo no Mercado Livre
+
+1. Entre em <https://developers.mercadolivre.com.br> com a conta do Mercado Livre
+   **da empresa** (dona do app) e abra **Minhas aplicações → Criar aplicação**.
+2. Preencha nome, nome curto, descrição e logo (ex.: "Gestão Decola Full").
+3. **URI de redirect**: o endereço do app publicado + `/mercado-livre/conectado`,
+   exatamente assim (ex.: `https://gestao-decola-full.vercel.app/mercado-livre/conectado`).
+   Precisa ser `https://`.
+4. Ative o **PKCE**, se a opção aparecer (recomendado).
+5. **Escopos/permissões**: leitura, escrita e **acesso offline** (`offline_access`;
+   sem ele não vem o token de renovação).
+6. **Tópicos de notificação**: `orders_v2` (vendas) e `items` (anúncios).
+7. **URL de retorno de notificações**:
+   `https://<ID-DO-PROJETO>.supabase.co/functions/v1/ml-webhook`.
+8. Salve e copie o **App ID** (client_id) e a **Secret Key** (client_secret).
+   A Secret Key é secreta: guarde só no cofre de senhas.
+
+### 10.2 Cadastrar os segredos das Edge Functions
+
+No Supabase: **Edge Functions → Secrets → Add new secret**. Cadastre:
+
+| Key                       | Value                                                                                                                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ML_CLIENT_ID`            | App ID do passo 10.1                                                                                                                                                                           |
+| `ML_CLIENT_SECRET`        | Secret Key do passo 10.1                                                                                                                                                                       |
+| `ML_REDIRECT_URI`         | a mesma URI de redirect do passo 10.1, idêntica                                                                                                                                                |
+| `ML_TOKEN_ENCRYPTION_KEY` | uma senha aleatória **com 40 caracteres ou mais** (gere no cofre de senhas). Ela criptografa os tokens do Mercado Livre no banco. **Não troque depois**: se trocar, todos precisam reconectar. |
+| `CRON_SECRET`             | outra senha aleatória com 40+ caracteres (usada pelos agendamentos)                                                                                                                            |
+
+Opcional: `ML_USE_PKCE` = `false` só se o seu app do Mercado Livre não tiver PKCE
+ativado (a conexão falha com "O Mercado Livre não aceitou a autorização").
+
+### 10.3 Publicar as Edge Functions
+
+Precisa do Node.js instalado. No terminal, dentro da pasta do projeto:
+
+```bash
+npx supabase login                                  # abre o navegador para autorizar
+npx supabase link --project-ref <ID-DO-PROJETO>     # o ID está na URL do projeto
+npx supabase functions deploy                        # publica todas as funções
+```
+
+O arquivo `supabase/config.toml` já desliga a checagem automática de JWT: cada
+função confere o acesso no próprio código.
+
+### 10.4 Ligar os agendamentos
+
+No **SQL Editor**, rode uma vez (troque os valores):
+
+```sql
+select vault.create_secret('https://<ID-DO-PROJETO>.supabase.co', 'project_url');
+select vault.create_secret('<o mesmo valor do CRON_SECRET do passo 10.2>', 'cron_secret');
+```
+
+Conferir: `select jobname, schedule from cron.job;` deve listar `ml-refresh-tokens`
+(renova os acessos a cada 30 minutos) e os demais agendamentos.
+
+### 10.5 Testar
+
+1. No app, menu **Mercado Livre → Conectar minha conta do Mercado Livre**.
+2. Autorize no site do Mercado Livre. Você volta para o app com a mensagem
+   "Conta … conectada!" e os anúncios são importados.
+3. Na aba **Anúncios**, os que têm o mesmo SKU de um produto do estoque aparecem
+   como **Sugerido**: confira e clique em **Confirmar**.
+4. Problemas? Veja **Edge Functions → Logs** no Supabase (os logs não mostram
+   tokens) e a aba **Registro** no app.
+
+## 11. Antes de abrir para o público
 
 - Preencha os campos entre colchetes nos **Termos de Uso** e na **Política de
   Privacidade** (`src/features/legal/texts.ts`) e revise com assessoria jurídica.

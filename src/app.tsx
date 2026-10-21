@@ -21,6 +21,8 @@ const ProductFormPage = lazy(() => import('@/features/stock/product-form-page'))
 const ProductDetailPage = lazy(() => import('@/features/stock/product-detail-page'))
 const ImportPage = lazy(() => import('@/features/stock/import-page'))
 const MovementsPage = lazy(() => import('@/features/stock/movements-page'))
+const MercadoLivrePage = lazy(() => import('@/features/mercadolivre/ml-page'))
+const MlConnectedPage = lazy(() => import('@/features/mercadolivre/connected-page'))
 const NotFoundPage = lazy(() => import('@/features/not-found-page'))
 const TermsPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.TermsPage })))
 const PrivacyPage = lazy(() => import('@/features/legal/legal-page').then((m) => ({ default: m.PrivacyPage })))
@@ -77,6 +79,8 @@ export function App() {
             <Route path="estoque/movimentacoes" element={<MovementsPage />} />
             <Route path="estoque/:id" element={<ProductDetailPage />} />
             <Route path="estoque/:id/editar" element={<ProductFormPage />} />
+            <Route path="mercado-livre" element={<MercadoLivrePage />} />
+            <Route path="mercado-livre/conectado" element={<MlConnectedPage />} />
             <Route path="glossario" element={<GlossaryPage />} />
             <Route path="perfil" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />

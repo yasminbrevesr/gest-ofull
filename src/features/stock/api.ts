@@ -60,6 +60,18 @@ export function useMovements({ productId, limit = 200 }: { productId?: string; l
   })
 }
 
+/** Todos os itens com estoque (produtos simples e variações), para vincular anúncios. */
+export function useStockItems() {
+  return useQuery({
+    queryKey: ['stock-items', 'all'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('stock_items').select('*').is('archived_at', null).order('product_name').order('variant_name').limit(5000)
+      if (error) throw error
+      return data as StockItem[]
+    },
+  })
+}
+
 /** Itens no estoque mínimo ou abaixo (painel inicial). */
 export function useLowStockItems() {
   return useQuery({
