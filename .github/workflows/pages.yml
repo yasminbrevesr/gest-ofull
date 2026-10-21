@@ -1,0 +1,73 @@
+# Publica o site no GitHub Pages a cada push na branch principal.
+# Antes da primeira vez (ver docs/configuracao.md, passo 5):
+#   - Settings → Pages → Source: GitHub Actions
+#   - Settings → Secrets and variables → Actions → aba Variables:
+#     VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY (chaves públicas)
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/clever-turing-yrw2l7]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Conferir variáveis do Supabase
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::Cadastre VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY em Settings → Secrets and variables → Actions → Variables."
+            exit 1
+          fi
+          case "$VITE_SUPABASE_PUBLISHABLE_KEY" in
+            sb_secret_*) echo "::error::Use a Publishable key (sb_publishable_...), nunca a Secret key."; exit 1 ;;
+          esac
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+
+      - name: Gerar o site
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_ENABLE_GOOGLE_LOGIN: ${{ vars.VITE_ENABLE_GOOGLE_LOGIN }}
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: |
+          npm run build
+          # O Pages não conhece as rotas do app: a página 404 carrega o próprio app.
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

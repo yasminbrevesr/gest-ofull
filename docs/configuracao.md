@@ -38,7 +38,7 @@ Os arquivos ficam em `supabase/migrations/`. Rode **todos, na ordem do nome**
    - **Confirm email**: ligado (recomendado).
    - **Minimum password length**: `8`.
 2. **Authentication → URL Configuration**:
-   - **Site URL**: o endereço do app publicado (ex.: `https://gestao-decola-full.vercel.app`).
+   - **Site URL**: o endereço do app publicado (ex.: `https://yasminbrevesr.github.io/gest-ofull/`).
    - **Redirect URLs**: adicione o mesmo endereço com `/**` no final e também
      `http://localhost:5173/**` (para testes no computador).
 3. (Opcional) **Authentication → Emails**: traduza os textos dos e-mails de
@@ -61,25 +61,41 @@ Botão **Connect** no topo do projeto (ou **Project Settings → API Keys**):
 Elas vão no app (arquivo `.env.local` no computador, ou nas variáveis da
 hospedagem). **Nunca** use a _Secret key_ (`sb_secret_...`) no app.
 
-## 5. Publicar o app (Vercel)
+## 5. Publicar o app (GitHub Pages)
 
-1. Acesse <https://vercel.com>, entre com o GitHub e clique em **Add New → Project**.
-2. Escolha o repositório `gest-ofull`. O Vercel detecta o Vite sozinho.
-3. Em **Environment Variables**, adicione:
+O site é publicado de graça pelo GitHub Pages, automaticamente a cada
+alteração no repositório (arquivo `.github/workflows/pages.yml`). O endereço
+fica `https://<usuário-do-github>.github.io/<repositório>/`, ex.:
+`https://yasminbrevesr.github.io/gest-ofull/`.
+
+1. No GitHub, abra o repositório → **Settings → Pages**. Em **Build and
+   deployment → Source**, escolha **GitHub Actions**.
+2. **Settings → Secrets and variables → Actions → aba Variables → New
+   repository variable**. Crie as duas (são chaves públicas, por isso vão em
+   _Variables_ e não em _Secrets_):
 
    | Name                            | Value                      |
    | ------------------------------- | -------------------------- |
    | `VITE_SUPABASE_URL`             | Project URL do passo 4     |
    | `VITE_SUPABASE_PUBLISHABLE_KEY` | Publishable key do passo 4 |
 
-4. Clique em **Deploy**. O arquivo `vercel.json` já cuida das rotas do app.
-5. Volte ao passo 3 e coloque o endereço gerado em **Site URL**.
+   (Opcional: `VITE_ENABLE_GOOGLE_LOGIN` = `true`, se configurou o Google.)
+
+3. Aba **Actions → Publicar no GitHub Pages → Run workflow** (botão à direita).
+   Em 2 a 3 minutos fica verde e o endereço aparece no resumo da execução e em
+   **Settings → Pages**. Daí em diante, cada alteração no código publica sozinha.
+   - Se ficar vermelho em "Conferir variáveis do Supabase", revise o item 2.
+4. Volte ao passo 3 e coloque o endereço em **Site URL** e em **Redirect URLs**
+   (com `/**` no final, ex.: `https://yasminbrevesr.github.io/gest-ofull/**`).
+
+> Trocou as chaves do Supabase? Atualize as variáveis e rode o item 3 de novo
+> (as chaves entram no site na hora de gerar).
 
 ## 6. Conferir
 
 1. Abra o app. Deve aparecer a tela **Que bom ver você** (login). Se aparecer o
    aviso "O app está sem a configuração do Supabase", revise as variáveis do
-   passo 5 e publique de novo.
+   passo 5 e rode a publicação de novo.
 2. Clique em **Criar conta grátis**, preencha e aceite os termos. Confirme pelo
    link do e-mail.
 3. Responda as 3 perguntas e os dados do negócio. Você deve cair no painel.
@@ -141,7 +157,7 @@ os links de cada etapa antes de abrir para o público. O conteúdo é em markdow
    **da empresa** (dona do app) e abra **Minhas aplicações → Criar aplicação**.
 2. Preencha nome, nome curto, descrição e logo (ex.: "Gestão Decola Full").
 3. **URI de redirect**: o endereço do app publicado + `/mercado-livre/conectado`,
-   exatamente assim (ex.: `https://gestao-decola-full.vercel.app/mercado-livre/conectado`).
+   exatamente assim (ex.: `https://yasminbrevesr.github.io/gest-ofull/mercado-livre/conectado`).
    Precisa ser `https://`.
 4. Ative o **PKCE**, se a opção aparecer (recomendado).
 5. **Escopos/permissões**: leitura, escrita e **acesso offline** (`offline_access`;
