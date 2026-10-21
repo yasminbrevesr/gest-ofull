@@ -162,6 +162,24 @@ revoke execute on function public.validate_ml_listing_link() from public, anon, 
 create trigger ml_listings_validate_link before insert or update of product_id, variant_id, link_status on public.ml_listings
 for each row execute function public.validate_ml_listing_link();
 
+-- Variação apagada: os anúncios ligados a ela voltam para "sem vínculo".
+create or replace function public.unlink_ml_listings_of_variant()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  update public.ml_listings set product_id = null, variant_id = null, link_status = 'unlinked' where variant_id = old.id;
+  return old;
+end;
+$$;
+
+revoke execute on function public.unlink_ml_listings_of_variant() from public, anon, authenticated;
+
+create trigger product_variants_unlink_ml before delete on public.product_variants
+for each row execute function public.unlink_ml_listings_of_variant();
+
 -- -----------------------------------------------------------------------------
 -- Sugestão automática de vínculo pelo SKU (SELLER_SKU do anúncio = SKU do estoque)
 -- -----------------------------------------------------------------------------

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input, NativeSelect } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { formatCurrency } from '@/lib/format'
+import { formatCurrency, formatDateTime } from '@/lib/format'
 import { errorMessage } from '@/lib/supabase'
 import { cn } from '@/lib/utils'
 import { useStockItems } from '../stock/api'
@@ -208,6 +208,17 @@ function ListingRow({ listing, items, itemsByKey }: { listing: MlListing; items:
           <p className="text-xs">
             SKU no anúncio: {listing.seller_sku ? <strong>{listing.seller_sku}</strong> : <span className="text-muted-foreground">não informado</span>}
           </p>
+          {listing.last_push_status && (
+            <p className={cn('text-xs', listing.last_push_status === 'error' ? 'font-medium text-foreground' : 'text-muted-foreground')}>
+              {listing.last_push_status === 'error' && <span className="mr-1 inline-block size-2 rounded-full bg-coral align-middle" aria-hidden />}
+              Último envio {listing.last_pushed_at && `em ${formatDateTime(listing.last_pushed_at)}`}:{' '}
+              {listing.last_push_status === 'success'
+                ? `${listing.last_pushed_quantity ?? '—'} un.`
+                : listing.last_push_status === 'skipped'
+                  ? `pulado — ${listing.last_push_error ?? ''}`
+                  : `erro — ${listing.last_push_error ?? ''}`}
+            </p>
+          )}
         </div>
       </div>
 

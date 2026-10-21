@@ -10,6 +10,48 @@ export interface MlConnection {
   last_sync_at: string | null
   last_sync_status: 'success' | 'partial' | 'error' | null
   connected_at: string
+  divergence_count: number
+  last_reconcile_at: string | null
+}
+
+export interface MlEvent {
+  id: string
+  source: 'webhook' | 'system'
+  topic: string
+  resource: string
+  status: 'pending' | 'processing' | 'processed' | 'error' | 'ignored'
+  attempts: number
+  next_attempt_at: string
+  last_error: string | null
+  processed_at: string | null
+  created_at: string
+}
+
+export interface Divergence {
+  listing_id: string
+  ml_item_id: string
+  ml_variation_id: number
+  title: string
+  variation_label: string | null
+  permalink: string | null
+  product_id: string
+  variant_id: string | null
+  product_name: string
+  variant_name: string | null
+  sku: string
+  local_quantity: number
+  ml_quantity: number
+  ml_checked_at: string | null
+}
+
+export const eventTopicNames: Record<string, string> = { orders_v2: 'Venda', items: 'Anúncio', stock_push: 'Envio de estoque' }
+
+export const eventStatusNames: Record<MlEvent['status'], string> = {
+  pending: 'Na fila',
+  processing: 'Processando',
+  processed: 'Concluído',
+  error: 'Erro',
+  ignored: 'Ignorado',
 }
 
 export type LinkStatus = 'unlinked' | 'suggested' | 'linked' | 'ignored'

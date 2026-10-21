@@ -18,3 +18,15 @@ verify_jwt = false
 
 [functions.ml-refresh-tokens]
 verify_jwt = false
+
+[functions.ml-webhook]
+verify_jwt = false
+
+[functions.ml-process-events]
+verify_jwt = false
+
+[functions.ml-push-stock]
+verify_jwt = false
+
+[functions.ml-reconcile]
+verify_jwt = false

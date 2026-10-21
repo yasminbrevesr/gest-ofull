@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { invokeFunction, supabase } from '@/lib/supabase'
-import type { LinkStatus, MlConnection, MlListing, SyncLog } from './types'
+import type { Divergence, LinkStatus, MlConnection, MlEvent, MlListing, SyncLog } from './types'
 
 export function useMlConnection() {
   return useQuery({
@@ -74,6 +74,18 @@ export function useMlListings() {
   })
 }
 
+/** Anúncios vinculados a um produto (página do produto). */
+export function useListingsForProduct(productId: string) {
+  return useQuery({
+    queryKey: ['ml-listings', 'produto', productId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('ml_listings').select('*').eq('product_id', productId).eq('link_status', 'linked').order('title')
+      if (error) throw error
+      return data as MlListing[]
+    },
+  })
+}
+
 export interface LinkInput {
   id: string
   productId: string | null
@@ -124,5 +136,108 @@ export function useSyncLogs(limit = 100) {
       if (error) throw error
       return data as SyncLog[]
     },
+  })
+}
+
+function useInvalidateSync() {
+  const queryClient = useQueryClient()
+  return () =>
+    Promise.all(
+      ['ml-connection', 'ml-listings', 'ml-divergences', 'ml-events', 'sync-logs', 'products', 'stock-items', 'stock-movements'].map((key) =>
+        queryClient.invalidateQueries({ queryKey: [key] }),
+      ),
+    )
+}
+
+export function useSetSyncMode() {
+  const invalidate = useInvalidateSync()
+  return useMutation({
+    mutationFn: async (mode: 'manual' | 'automatic') => {
+      const { error } = await supabase.rpc('set_ml_sync_mode', { p_mode: mode })
+      if (error) throw error
+    },
+    onSuccess: invalidate,
+  })
+}
+
+export interface PushSummary {
+  pushed: number
+  unchanged: number
+  skipped: number
+  failed: number
+}
+
+export function usePushStock() {
+  const invalidate = useInvalidateSync()
+  return useMutation({
+    mutationFn: (listingIds?: string[]) => invokeFunction<PushSummary>('ml-push-stock', listingIds ? { listingIds } : {}),
+    onSettled: invalidate,
+  })
+}
+
+export function pushMessage(s: PushSummary) {
+  const parts: string[] = []
+  if (s.pushed) parts.push(`${s.pushed} anúncio(s) atualizado(s)`)
+  if (s.unchanged) parts.push(`${s.unchanged} já estava(m) certo(s)`)
+  if (s.skipped) parts.push(`${s.skipped} pulado(s) (Full ou finalizado)`)
+  if (s.failed) parts.push(`${s.failed} com erro (veja o registro)`)
+  return parts.join(', ') + '.'
+}
+
+export function useReconcileNow() {
+  const invalidate = useInvalidateSync()
+  return useMutation({
+    mutationFn: () => invokeFunction<{ listings: number; divergences: number; failures: number }>('ml-reconcile'),
+    onSettled: invalidate,
+  })
+}
+
+export function useDivergences() {
+  return useQuery({
+    queryKey: ['ml-divergences'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('ml_stock_divergences').select('*').order('title')
+      if (error) throw error
+      return data as Divergence[]
+    },
+  })
+}
+
+export function useAcceptMlQuantity() {
+  const invalidate = useInvalidateSync()
+  return useMutation({
+    mutationFn: async (listingId: string) => {
+      const { error } = await supabase.rpc('accept_ml_quantity', { p_listing_id: listingId })
+      if (error) throw error
+    },
+    onSuccess: invalidate,
+  })
+}
+
+export function useMlEvents(limit = 50) {
+  return useQuery({
+    queryKey: ['ml-events', limit],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('ml_events')
+        .select('id, source, topic, resource, status, attempts, next_attempt_at, last_error, processed_at, created_at')
+        .order('created_at', { ascending: false })
+        .limit(limit)
+      if (error) throw error
+      return data as MlEvent[]
+    },
+  })
+}
+
+/** "Reprocessar": volta o evento para a fila e já processa. */
+export function useRetryEvent() {
+  const invalidate = useInvalidateSync()
+  return useMutation({
+    mutationFn: async (eventId: string) => {
+      const { error } = await supabase.rpc('retry_ml_event', { p_event_id: eventId })
+      if (error) throw error
+      return invokeFunction<{ processed: number; failed: number }>('ml-process-events')
+    },
+    onSettled: invalidate,
   })
 }

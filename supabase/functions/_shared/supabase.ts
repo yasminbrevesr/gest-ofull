@@ -26,3 +26,12 @@ export function requireCron(req: Request) {
   const received = req.headers.get('x-cron-secret') ?? ''
   if (!timingSafeEqual(received, requireEnv('CRON_SECRET'))) throw new HttpError(401, 'Não autorizado')
 }
+
+/** Aceita o agendador (todos os usuários) ou um usuário logado (só os dados dele). */
+export async function requireUserOrCron(req: Request, admin: Admin): Promise<{ userId: string | null }> {
+  if (req.headers.has('x-cron-secret')) {
+    requireCron(req)
+    return { userId: null }
+  }
+  return { userId: (await requireUser(req, admin)).id }
+}

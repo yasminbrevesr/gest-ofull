@@ -200,6 +200,51 @@ Conferir: `select jobname, schedule from cron.job;` deve listar `ml-refresh-toke
 4. Problemas? Veja **Edge Functions → Logs** no Supabase (os logs não mostram
    tokens) e a aba **Registro** no app.
 
+### 10.6 Como a sincronização funciona
+
+- **Vendas** (sempre ligadas): o Mercado Livre avisa o app (`ml-webhook`), que
+  responde na hora e coloca o aviso na fila (`ml_events`). O pedido é buscado
+  na API e, se estiver pago, o estoque do produto vinculado recebe uma
+  movimentação "Venda" com o número do pedido. A mesma venda **nunca** baixa
+  duas vezes (chave pedido + anúncio em `ml_order_items`). Pedido cancelado
+  devolve as unidades. Vendas no **Full** não mexem no estoque daqui.
+- **Envio de estoque** (sistema → Mercado Livre): no modo **manual** (padrão),
+  só pelo botão **Enviar estoque agora**. No modo **automático**, cada
+  movimentação de um produto vinculado entra na fila e é enviada em até 1
+  minuto. Anúncios no Full nunca são alterados.
+- **Falhas**: erros temporários (Mercado Livre fora do ar, limite de
+  requisições) são tentados de novo com espera crescente (1, 2, 4… até 60
+  minutos, 8 tentativas). Depois disso o evento fica com **Erro** e pode ser
+  reprocessado na aba **Sincronização**.
+- **Conferência** (a cada hora): compara o estoque daqui com o dos anúncios e
+  lista as diferenças para você escolher qual número vale.
+
+Agendamentos (confira em `select jobname, schedule from cron.job;`):
+
+| Nome                                            | Quando        | O que faz                                    |
+| ----------------------------------------------- | ------------- | -------------------------------------------- |
+| `ml-process-events`                             | a cada minuto | processa a fila de vendas, anúncios e envios |
+| `ml-refresh-tokens`                             | a cada 30 min | renova o acesso ao Mercado Livre             |
+| `ml-reconcile`                                  | a cada hora   | confere estoque do sistema x Mercado Livre   |
+| `ml-events-cleanup` / `ml-oauth-states-cleanup` | diariamente   | limpeza de registros antigos                 |
+
+> Sobre o modelo de estoque do Mercado Livre: o envio usa
+> `PUT /items/{id}` (com todas as variações do anúncio, para nenhuma ser
+> apagada). Contas com **estoque por depósito (multiorigem)** não aceitam esse
+> envio: o app detecta que a quantidade não mudou e mostra o erro no
+> registro. Nesses casos, atualize o estoque pelo próprio Mercado Livre.
+
+### 10.7 Testar a sincronização
+
+1. Vincule um anúncio de teste a um produto do estoque.
+2. Na aba **Sincronização**, clique em **Enviar estoque agora** e confira no
+   Mercado Livre se a quantidade do anúncio mudou.
+3. Faça uma venda de teste (ou peça para alguém comprar) e veja, em até 1
+   minuto, a movimentação "Venda" no histórico do produto e a linha no
+   **Registro**.
+4. Se nada chegar: confira a URL de notificações do passo 10.1 e
+   **Edge Functions → ml-webhook → Logs** no Supabase.
+
 ## 11. Antes de abrir para o público
 
 - Preencha os campos entre colchetes nos **Termos de Uso** e na **Política de

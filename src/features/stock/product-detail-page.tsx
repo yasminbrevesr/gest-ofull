@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { formatCurrency, formatNumber, formatPercent } from '@/lib/format'
 import { errorMessage } from '@/lib/supabase'
 import { useSimulationsForProduct } from '../calculator/api'
+import { useListingsForProduct } from '../mercadolivre/api'
 import { useDeleteProduct, useMovements, usePhotoUrls, useProduct, useSetArchived } from './api'
 import { MovementDialog } from './movement-dialog'
 import { MovementList } from './movement-list'
@@ -55,6 +56,7 @@ function ProductDetail({ product }: { product: Product }) {
   const navigate = useNavigate()
   const movements = useMovements({ productId: product.id })
   const simulations = useSimulationsForProduct(product.id)
+  const listings = useListingsForProduct(product.id)
   const photo = usePhotoUrls([product.photo_path])
   const remove = useDeleteProduct()
   const archive = useSetArchived()
@@ -216,6 +218,37 @@ function ProductDetail({ product }: { product: Product }) {
                 <Link to={calculatorLink(product)}>
                   <Calculator /> Calcular lucro deste produto
                 </Link>
+              </Button>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Anúncios no Mercado Livre</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              {listings.data?.length ? (
+                <ul className="space-y-2">
+                  {listings.data.map((l) => {
+                    const variant = product.product_variants.find((v) => v.id === l.variant_id)
+                    return (
+                      <li key={l.id} className="space-y-0.5">
+                        <a href={l.permalink ?? undefined} target="_blank" rel="noopener noreferrer" className="font-medium text-primary-text hover:underline">
+                          {l.title}
+                        </a>
+                        <p className="text-xs text-muted-foreground">
+                          {l.ml_item_id}
+                          {variant && ` · ${variant.name}`}
+                          {l.is_full ? ' · Full (estoque do Mercado Livre)' : ` · ${l.ml_available_quantity ?? '—'} un. no ML`}
+                        </p>
+                      </li>
+                    )
+                  })}
+                </ul>
+              ) : (
+                <p className="text-muted-foreground">Nenhum anúncio vinculado.</p>
+              )}
+              <Button asChild variant="outline" size="sm" className="w-full">
+                <Link to="/mercado-livre">Gerenciar vínculos</Link>
               </Button>
             </CardContent>
           </Card>

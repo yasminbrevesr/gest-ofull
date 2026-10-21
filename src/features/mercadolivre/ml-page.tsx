@@ -1,4 +1,4 @@
-import { LogOut, RefreshCw, ScrollText, Store, TriangleAlert } from 'lucide-react'
+import { ArrowLeftRight, LogOut, RefreshCw, ScrollText, Store, TriangleAlert } from 'lucide-react'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -17,6 +17,7 @@ import { useDisconnect, useImportListings, useMlConnection, type ImportSummary }
 import { ConnectCard } from './connect-card'
 import { ListingsTab } from './listings-tab'
 import { SyncLogTab } from './sync-log-tab'
+import { SyncTab } from './sync-tab'
 import type { MlConnection } from './types'
 
 export function importMessage(s: ImportSummary) {
@@ -111,12 +112,19 @@ function Connected({ connection }: { connection: MlConnection }) {
           <TabsTrigger value="anuncios">
             <Store /> Anúncios
           </TabsTrigger>
+          <TabsTrigger value="sincronizacao">
+            <ArrowLeftRight /> Sincronização
+            {connection.divergence_count > 0 && <Badge variant="warning">{connection.divergence_count}</Badge>}
+          </TabsTrigger>
           <TabsTrigger value="registro">
             <ScrollText /> Registro
           </TabsTrigger>
         </TabsList>
         <TabsContent value="anuncios">
           <ListingsTab onImport={runImport} importing={importer.isPending} />
+        </TabsContent>
+        <TabsContent value="sincronizacao">
+          <SyncTab connection={connection} />
         </TabsContent>
         <TabsContent value="registro">
           <SyncLogTab />

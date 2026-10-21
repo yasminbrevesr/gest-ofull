@@ -74,3 +74,14 @@ select public.invoke_edge_function('ml-refresh-tokens');
 select tests.assert(
   (select url = 'https://exemplo.supabase.co/functions/v1/ml-refresh-tokens' and headers ->> 'x-cron-secret' = 'segredo-teste' from net.requests order by id desc limit 1),
   'agendamento chama a função com o segredo');
+
+-- Apagar produto ou variação vinculados desfaz o vínculo (sem travar a exclusão)
+select tests.login(current_setting('t.m1')::uuid);
+set role authenticated;
+update public.ml_listings set product_id = (select id from public.products where sku = 'CANECA-01'), link_status = 'linked' where ml_item_id = 'MLB400';
+delete from public.product_variants where sku = 'CAM-AZ-M';
+select tests.assert((select link_status = 'unlinked' and product_id is null from public.ml_listings where ml_item_id = 'MLB200'), 'apagar variação desvincula o anúncio');
+delete from public.products where sku = 'CANECA-01';
+select tests.assert((select count(*) = 0 from public.ml_listings where product_id is not null), 'apagar produto desvincula os anúncios');
+select tests.assert((select link_status = 'unlinked' from public.ml_listings where ml_item_id = 'MLB400'), 'anúncio volta para "sem vínculo"');
+reset role;
