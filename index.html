@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#488399" />
+    <meta name="theme-color" content="#06100c" />
     <meta name="description" content="Aprenda a vender no Mercado Livre, calcule o lucro real de cada venda e controle seu estoque." />
     <title>Gestão Decola Full</title>
     <script>
-      // Aplica o tema salvo antes de desenhar a tela (evita piscar claro/escuro).
+      // Escuro por padrão; aplica o tema claro salvo antes de desenhar a tela (evita piscar).
       try {
-        if (localStorage.getItem('gdf-theme') === 'dark') document.documentElement.classList.add('dark')
+        if (localStorage.getItem('gdf-theme') === 'light') document.documentElement.classList.remove('dark')
       } catch (e) {}
     </script>
   </head>

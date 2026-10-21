@@ -12,6 +12,7 @@ select tests.assert(
   (select terms_accepted_at is null and full_name = 'Bia (Google)' from public.profiles where user_id = current_setting('t.b')::uuid),
   'cadastro sem aceite (ex.: Google) fica pendente'
 );
+select tests.assert((select bool_and(theme = 'dark') from public.profiles), 'tema escuro é o padrão de quem se cadastra');
 
 -- Usuária A logada
 select tests.login(current_setting('t.a')::uuid);

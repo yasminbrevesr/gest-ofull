@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Field } from '@/components/common/field'
 import { PasswordInput } from '@/components/common/password-input'
@@ -54,8 +55,14 @@ export default function LoginPage() {
             Esqueci minha senha
           </Link>
         </div>
-        <Button type="submit" className="w-full" disabled={loading || !email || !password}>
-          {loading ? 'Entrando…' : 'Entrar'}
+        <Button type="submit" size="lg" className="w-full" disabled={loading || !email || !password}>
+          {loading ? (
+            'Entrando…'
+          ) : (
+            <>
+              Entrar na plataforma <ArrowRight />
+            </>
+          )}
         </Button>
       </form>
       <GoogleButton />

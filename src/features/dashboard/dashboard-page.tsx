@@ -77,7 +77,7 @@ function ShortcutCard({ to, title, description, icon: Icon }: Shortcut) {
   return (
     <Link to={to} className="group rounded-xl">
       <Card className="flex h-full items-start gap-3 p-4 transition-colors duration-150 group-hover:border-primary/60">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-text">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/12 text-primary-text">
           <Icon className="size-5" strokeWidth={1.75} />
         </span>
         <span className="min-w-0 flex-1">

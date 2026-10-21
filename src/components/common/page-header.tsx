@@ -16,11 +16,11 @@ export function PageHeader({ title, description, actions, className }: PageHeade
         <h1 className="text-2xl leading-tight sm:text-3xl">{title}</h1>
         {description && <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{description}</p>}
       </div>
-      {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
+      {actions && <div className="flex flex-wrap gap-2 sm:shrink-0 sm:justify-end">{actions}</div>}
     </div>
   )
 }
 
 export function Highlight({ children }: { children: ReactNode }) {
-  return <span className="text-primary-text">{children}</span>
+  return <span className="text-gradient">{children}</span>
 }

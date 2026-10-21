@@ -73,7 +73,7 @@ export function ListingsTab({ onImport, importing }: { onImport: () => void; imp
   return (
     <div className="space-y-4">
       {counts.suggested > 0 && (
-        <Card className="flex flex-col gap-3 border-butter bg-butter/30 p-4 sm:flex-row sm:items-center sm:justify-between dark:bg-butter/15">
+        <Card className="flex flex-col gap-3 border-butter/40 bg-butter/10 p-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm">
             <strong>{counts.suggested} anúncio(s)</strong> com SKU igual ao de um produto do estoque. Confira e confirme o vínculo.
           </p>

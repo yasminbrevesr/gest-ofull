@@ -12,7 +12,7 @@ e sincroniza o estoque com o Mercado Livre. _(nome provisório)_
 
 | Módulo         | O que faz                                                                                                                                                                                                                |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Login e perfil | Cadastro com aceite de Termos/Privacidade (LGPD), recuperação de senha, Google opcional, cadastro inicial com 3 perguntas, tema claro/escuro salvo por usuário                                                           |
+| Login e perfil | Cadastro com aceite de Termos/Privacidade (LGPD), recuperação de senha, Google opcional, cadastro inicial com 3 perguntas, tema escuro (padrão) ou claro salvo por usuário                                               |
 | Painel         | Progresso da jornada, próxima etapa, atalhos, estoque baixo e resumo do Mercado Livre                                                                                                                                    |
 | Como começar   | 9 etapas com checklist (conteúdo no banco, editável pelo admin) e glossário                                                                                                                                              |
 | Calculadora    | Lucro, margem e ROI com tarifas do banco (com vigência), Clássico x Premium, modo reverso (preço para uma margem), promoção (preço cheio para receber/lucrar um valor com X% de desconto) e simulações salvas            |
@@ -57,6 +57,10 @@ gest-ofull/
 | `ml-process-events`  | agendador (1 min) / app | Processa a fila: vendas, anúncios, envios                    |
 | `ml-reconcile`       | agendador (1 h) / app   | Confere estoque do sistema x Mercado Livre                   |
 | `ml-refresh-tokens`  | agendador (30 min)      | Renova os tokens antes de vencer                             |
+
+## Visual
+
+Tema escuro com gradiente e verde forte de destaque (ciano de apoio), títulos em Plus Jakarta Sans e textos em Inter. As cores ficam só em tokens no topo de `src/index.css` (`:root` = tema claro, `.dark` = tema escuro): para trocar a cor de destaque, altere `--primary`, `--primary-hover` e `--primary-text` nos dois temas. O menu lateral e o painel de apresentação do login são sempre escuros.
 
 ## Rodar no computador
 

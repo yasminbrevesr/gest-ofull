@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
     <AuthLayout title="Recuperar senha" subtitle="Enviaremos um link para você criar uma senha nova.">
       {sent ? (
         <div className="space-y-4 text-sm leading-relaxed">
-          <div className="flex size-12 items-center justify-center rounded-full bg-rose text-on-accent">
+          <div className="flex size-12 items-center justify-center rounded-full border border-primary/30 bg-primary/12 text-primary-text">
             <MailCheck />
           </div>
           <p>

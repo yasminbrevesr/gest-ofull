@@ -60,7 +60,7 @@ export default function JourneyPage() {
           <p className="font-semibold">
             {summary.done} de {summary.total} etapas concluídas
           </p>
-          <p className="tabular font-serif text-2xl font-semibold text-primary-text">{summary.percent}%</p>
+          <p className="tabular font-display text-2xl font-semibold text-primary-text">{summary.percent}%</p>
         </div>
         <Progress value={summary.percent} aria-label="Progresso da jornada" />
         {summary.next ? (
@@ -90,8 +90,8 @@ export default function JourneyPage() {
                 >
                   <span
                     className={cn(
-                      'flex size-9 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold',
-                      state === 'done' ? 'bg-primary text-primary-foreground' : 'bg-rose/70 text-on-accent',
+                      'flex size-9 shrink-0 items-center justify-center rounded-full font-display text-lg font-semibold',
+                      state === 'done' ? 'bg-primary text-primary-foreground' : 'border border-primary/30 bg-primary/12 text-primary-text',
                     )}
                     aria-hidden
                   >

@@ -12,7 +12,7 @@ const SheetTitle = SheetPrimitive.Title
 function SheetContent({ className, children, ...props }: ComponentProps<typeof SheetPrimitive.Content>) {
   return (
     <SheetPrimitive.Portal>
-      <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-[#1f2a2e]/45" />
+      <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-black/65" />
       <SheetPrimitive.Content
         className={cn('fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col border-r border-border bg-card shadow-lg', className)}
         {...props}

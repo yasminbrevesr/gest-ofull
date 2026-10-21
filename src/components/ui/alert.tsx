@@ -6,10 +6,10 @@ import { cn } from '@/lib/utils'
 const alertVariants = cva('flex gap-3 rounded-lg border p-4 text-sm leading-relaxed [&>svg]:mt-0.5 [&>svg]:size-5 [&>svg]:shrink-0', {
   variants: {
     variant: {
-      info: 'border-primary/30 bg-primary-soft text-foreground [&>svg]:text-primary-text',
-      warning: 'border-butter bg-butter/40 text-foreground dark:bg-butter/90 dark:text-on-accent',
-      danger: 'border-coral bg-coral/30 text-foreground dark:bg-coral/90 dark:text-on-accent',
-      tip: 'border-rose bg-rose/40 text-foreground dark:bg-rose/90 dark:text-on-accent',
+      info: 'border-primary/30 bg-primary/10 text-foreground [&>svg]:text-primary-text',
+      warning: 'border-butter/40 bg-butter/10 text-foreground [&>svg]:text-butter-text',
+      danger: 'border-coral/45 bg-coral/12 text-foreground [&>svg]:text-coral-text',
+      tip: 'border-rose/40 bg-rose/10 text-foreground [&>svg]:text-rose-text',
     },
   },
   defaultVariants: { variant: 'info' },

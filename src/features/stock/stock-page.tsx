@@ -162,9 +162,9 @@ export default function StockPage() {
 
 function SummaryTile({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <Card className={cn('p-4', highlight && 'border-butter bg-butter/30 dark:bg-butter/15')}>
+    <Card className={cn('p-4', highlight && 'border-butter/45 bg-butter/10')}>
       <dt className="text-xs text-muted-foreground dark:text-foreground/80">{label}</dt>
-      <dd className="tabular mt-1 font-serif text-2xl font-semibold">{value}</dd>
+      <dd className="tabular mt-1 font-display text-2xl font-semibold">{value}</dd>
     </Card>
   )
 }

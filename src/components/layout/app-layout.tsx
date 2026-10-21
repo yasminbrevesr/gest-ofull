@@ -33,7 +33,9 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150 [&_svg]:size-[18px]',
-                isActive ? 'bg-primary text-primary-foreground font-semibold' : 'text-foreground hover:bg-muted',
+                isActive
+                  ? 'bg-linear-to-r from-primary/20 to-primary/5 font-semibold text-primary-text ring-1 ring-primary/30 ring-inset'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground',
               )
             }
           >
@@ -62,7 +64,9 @@ function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" aria-label="Menu da conta" className="rounded-full">
-          <span className="flex size-8 items-center justify-center rounded-full bg-rose text-xs font-semibold text-on-accent">{initials}</span>
+          <span className="flex size-8 items-center justify-center rounded-full bg-linear-to-br from-primary to-cyan text-xs font-bold text-on-accent">
+            {initials}
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -100,7 +104,8 @@ export function AppLayout() {
         Pular para o conteúdo
       </a>
 
-      <aside className="sticky top-0 hidden h-dvh flex-col gap-6 border-r border-border bg-card px-4 py-5 lg:flex">
+      {/* O menu lateral é sempre escuro, também no tema claro. */}
+      <aside className="dark sticky top-0 hidden h-dvh flex-col gap-6 border-r border-border bg-sidebar bg-[radial-gradient(420px_320px_at_0%_0%,rgb(16_224_154/0.14),transparent_70%)] px-4 py-5 text-foreground lg:flex">
         <Link to="/" className="rounded-md px-1">
           <Brand />
         </Link>
@@ -108,7 +113,7 @@ export function AppLayout() {
       </aside>
 
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetContent aria-describedby={undefined} className="gap-6 px-4 py-5">
+        <SheetContent aria-describedby={undefined} className="dark gap-6 border-border bg-sidebar px-4 py-5 text-foreground">
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <Brand className="pr-8" />
           <NavLinks onNavigate={() => setMenuOpen(false)} />
@@ -116,13 +121,13 @@ export function AppLayout() {
       </Sheet>
 
       <div className="flex min-w-0 flex-col">
-        <header className="sticky top-0 z-40 flex h-16 items-center gap-2 border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-40 flex h-16 items-center gap-2 border-b border-border bg-background/75 px-4 backdrop-blur-md sm:px-6">
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Abrir menu">
             <Menu />
           </Button>
           <Link to="/" className="flex items-center gap-2 lg:hidden" aria-label="Início">
             <BrandMark className="size-8" />
-            <span className="font-serif font-semibold max-sm:sr-only">Gestão Decola Full</span>
+            <span className="font-display font-bold max-sm:sr-only">Gestão Decola Full</span>
           </Link>
           <div className="ml-auto flex items-center gap-1">
             <ThemeToggle />

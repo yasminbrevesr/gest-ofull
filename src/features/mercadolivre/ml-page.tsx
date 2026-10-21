@@ -75,7 +75,7 @@ function Connected({ connection }: { connection: MlConnection }) {
 
       <Card className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex size-11 items-center justify-center rounded-full bg-butter text-on-accent">
+          <span className="flex size-11 items-center justify-center rounded-full bg-butter text-on-accent shadow-[0_0_24px_-6px_var(--butter)]">
             <Store className="size-5" />
           </span>
           <div>

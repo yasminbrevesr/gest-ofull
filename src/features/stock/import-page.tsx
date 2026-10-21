@@ -66,7 +66,7 @@ export default function ImportPage() {
             <Card>
               <CardContent className="pt-5">
                 <label className="flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 border-dashed border-border bg-muted/50 px-6 py-12 text-center transition-colors hover:border-primary/60">
-                  <span className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary-text">
+                  <span className="flex size-12 items-center justify-center rounded-full border border-primary/25 bg-primary/12 text-primary-text">
                     <Upload />
                   </span>
                   <span className="font-semibold">Escolha o arquivo CSV</span>

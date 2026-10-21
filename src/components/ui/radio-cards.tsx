@@ -37,7 +37,7 @@ function RadioCards<T extends string>({ value, onValueChange, options, className
         <RadioGroupPrimitive.Item
           key={option.value}
           value={option.value}
-          className="flex cursor-pointer flex-col items-start gap-0.5 rounded-lg border border-border bg-card px-3 py-2.5 text-left text-sm transition-colors duration-150 hover:border-primary/60 data-[state=checked]:border-primary data-[state=checked]:bg-primary-soft data-[state=checked]:ring-1 data-[state=checked]:ring-primary"
+          className="flex cursor-pointer flex-col items-start gap-0.5 rounded-lg border border-border bg-field px-3 py-2.5 text-left text-sm transition-colors duration-150 hover:border-primary/60 data-[state=checked]:border-primary data-[state=checked]:bg-primary/12 data-[state=checked]:ring-1 data-[state=checked]:ring-primary"
         >
           <span className="font-semibold">{option.label}</span>
           {option.description && <span className="text-xs text-muted-foreground">{option.description}</span>}

@@ -67,7 +67,7 @@ export default function ConnectedPage() {
       {step.state === 'connecting' || step.state === 'importing' ? (
         <>
           <div className="mx-auto size-10 animate-spin rounded-full border-4 border-primary-soft border-t-primary" role="status" />
-          <p className="font-serif text-xl font-semibold">
+          <p className="font-display text-xl font-semibold">
             {step.state === 'connecting' ? 'Conectando sua conta…' : `Conta ${step.nickname} conectada! Importando anúncios…`}
           </p>
           <p className="text-sm text-muted-foreground">Isso pode levar alguns segundos. Não feche esta página.</p>
@@ -75,7 +75,7 @@ export default function ConnectedPage() {
       ) : step.state === 'done' ? (
         <>
           <CircleCheck className="mx-auto size-12 text-primary-text" />
-          <p className="font-serif text-xl font-semibold">Conta {step.nickname} conectada!</p>
+          <p className="font-display text-xl font-semibold">Conta {step.nickname} conectada!</p>
           <p className="text-sm">{step.summary}</p>
           <Button asChild>
             <Link to="/mercado-livre">Ver anúncios e vínculos</Link>
@@ -84,7 +84,7 @@ export default function ConnectedPage() {
       ) : (
         <>
           <CircleAlert className="mx-auto size-12" />
-          <p className="font-serif text-xl font-semibold">Não foi possível conectar</p>
+          <p className="font-display text-xl font-semibold">Não foi possível conectar</p>
           <p className="text-sm">{step.message}</p>
           <Button asChild>
             <Link to="/mercado-livre">Tentar de novo</Link>

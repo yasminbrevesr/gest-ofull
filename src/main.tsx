@@ -17,8 +17,8 @@ const queryClient = new QueryClient({
 function MissingConfig() {
   return (
     <div className="mx-auto max-w-lg p-8">
-      <div role="alert" className="rounded-xl border border-coral bg-coral/25 p-6 text-sm leading-relaxed">
-        <p className="mb-2 font-serif text-lg font-semibold">O app está sem a configuração do Supabase</p>
+      <div role="alert" className="rounded-xl border border-coral/45 bg-coral/10 p-6 text-sm leading-relaxed">
+        <p className="mb-2 font-display text-lg font-semibold">O app está sem a configuração do Supabase</p>
         <p>
           Crie o arquivo <code>.env.local</code> (copie de <code>.env.example</code>) com <code>VITE_SUPABASE_URL</code> e{' '}
           <code>VITE_SUPABASE_PUBLISHABLE_KEY</code> e reinicie o app. Veja <code>docs/configuracao.md</code>.

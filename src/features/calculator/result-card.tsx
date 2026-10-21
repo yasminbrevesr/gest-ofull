@@ -5,7 +5,7 @@ import { formatCurrency, formatPercent } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { ProfitResult } from './engine'
 import { help, listingTypeLabels, shippingLabels } from './labels'
-import { MarginBadge, statusSurface } from './margin-indicator'
+import { MarginBadge, statusSurface, statusText } from './margin-indicator'
 import type { CalculatorInputs } from './engine'
 
 function Row({
@@ -48,7 +48,7 @@ export function ResultCard({ result, inputs }: { result: ProfitResult; inputs: C
           <p className="text-sm text-muted-foreground dark:text-foreground/80">
             {multiple ? `Lucro líquido (${result.quantity} unidades)` : 'Lucro líquido por venda'}
           </p>
-          <p className="tabular font-serif text-4xl font-semibold" aria-live="polite">
+          <p className={cn('tabular font-display text-4xl font-bold', statusText[result.status])} aria-live="polite">
             {formatCurrency(result.netProfit)}
           </p>
           {multiple && <p className="tabular text-sm">{formatCurrency(result.netProfitUnit)} por unidade</p>}

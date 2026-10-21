@@ -1,90 +1,165 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/inter';
-@import '@fontsource-variable/lora';
+@import '@fontsource-variable/plus-jakarta-sans';
 
 /* Tema escuro ativado pela classe .dark no <html> (ver ThemeProvider). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Paleta oficial. Use somente estes tokens (e os neutros derivados) nos
- * componentes, nunca cores soltas.
- * - coral / manteiga / rosa são cores de FUNDO: o texto sobre elas é sempre
- *   grafite (--on-accent). Nunca use manteiga ou rosa como cor de texto.
- * - --primary-text é o azul petróleo em versão legível para textos e links
- *   (contraste AA sobre o fundo de cada tema).
+ * Identidade visual: fundo escuro com gradiente, verde forte de destaque e
+ * ciano de apoio. Use somente estes tokens nos componentes, nunca cores soltas.
+ * - primary (verde): botões principais, links, item ativo, destaques.
+ * - coral (erro/prejuízo), butter (aviso/margem apertada), rose (dica): em
+ *   selos e avisos use fundo transparente da cor + texto *-text (contraste AA).
+ * - Texto sobre fundo verde/cheio: --on-accent (quase preto).
+ * O tema escuro é o padrão; o claro usa superfícies tingidas (pouco branco).
  */
 :root {
-  --background: #f4f2f0;
-  --foreground: #3f3f3f;
-  --card: #ffffff;
-  --card-foreground: #3f3f3f;
-  --muted: #ece8e4;
-  --muted-foreground: #7a7a7a;
-  --border: #d8d8d8;
-  --input: #d8d8d8;
-  --ring: #488399;
+  color-scheme: light;
+  --background: #e6ede9;
+  --background-2: #d9e3de;
+  --foreground: #0b1712;
+  --card: #f3f7f5;
+  --card-2: #ebf1ee;
+  --card-foreground: #0b1712;
+  --field: #eef4f1;
+  --muted: #dfe8e3;
+  --muted-foreground: #4f6358;
+  --border: #c6d4cc;
+  --input: #b9c9c0;
+  --ring: #00b47a;
+  --sidebar: #06100c;
 
-  --primary: #488399;
-  --primary-hover: #3a6b7e;
-  --primary-foreground: #ffffff;
-  --primary-text: #3a6b7e;
-  --primary-soft: #e3edf0;
+  --primary: #00c584;
+  --primary-hover: #00ab72;
+  --primary-foreground: #04120c;
+  --primary-text: #00774f;
+  --primary-soft: #cdeee0;
+  --cyan: #0e7490;
 
-  --coral: #ea9393;
-  --butter: #f4d38a;
-  --rose: #f1bebe;
-  --gray-light: #d8d8d8;
-  --on-accent: #3f3f3f;
+  --coral: #e5484d;
+  --coral-text: #b42318;
+  --butter: #f5a524;
+  --butter-text: #8a5300;
+  --rose: #e0457b;
+  --rose-text: #a21c54;
+  --on-accent: #04120c;
 
-  /* "Saudável" no indicador de margem. A paleta não tem verde: usamos o
-     azul petróleo. Para trocar, basta mudar este token. */
-  --success: #488399;
+  /* "Saudável" no indicador de margem. */
+  --success: var(--primary);
 }
 
 .dark {
-  --background: #1f2a2e;
-  --foreground: #f4f2f0;
-  --card: #27353a;
-  --card-foreground: #f4f2f0;
-  --muted: #2e3e44;
-  --muted-foreground: #a9b4b8;
-  --border: #3a4a50;
-  --input: #3a4a50;
-  --primary-text: #8cc0d2;
-  --primary-soft: #2c4750;
+  color-scheme: dark;
+  --background: #06100c;
+  --background-2: #030806;
+  --foreground: #e7f4ed;
+  --card: #0e1b15;
+  --card-2: #0a1510;
+  --card-foreground: #e7f4ed;
+  --field: #07110d;
+  --muted: #12221b;
+  --muted-foreground: #8ba699;
+  --border: #1b2f25;
+  --input: #23392e;
+  --ring: #10e09a;
+  --sidebar: #040b08;
+
+  --primary: #10e09a;
+  --primary-hover: #0cc487;
+  --primary-foreground: #04120c;
+  --primary-text: #3cf0b5;
+  --primary-soft: #0f2b21;
+  --cyan: #22d3ee;
+
+  --coral: #ff6b6b;
+  --coral-text: #ff9b9b;
+  --butter: #ffc24d;
+  --butter-text: #ffd57f;
+  --rose: #f472b6;
+  --rose-text: #f9a8d4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-card-2: var(--card-2);
   --color-card-foreground: var(--card-foreground);
+  --color-field: var(--field);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-text: var(--primary-text);
   --color-primary-soft: var(--primary-soft);
+  --color-cyan: var(--cyan);
   --color-coral: var(--coral);
+  --color-coral-text: var(--coral-text);
   --color-butter: var(--butter);
+  --color-butter-text: var(--butter-text);
   --color-rose: var(--rose);
-  --color-gray-light: var(--gray-light);
+  --color-rose-text: var(--rose-text);
   --color-on-accent: var(--on-accent);
   --color-success: var(--success);
 
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Lora Variable', Georgia, 'Times New Roman', serif;
+  --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
 
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
   --radius-xl: 14px;
 
-  --shadow-soft: 0 1px 2px rgb(63 63 63 / 0.04), 0 2px 8px rgb(63 63 63 / 0.04);
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.12), 0 8px 24px -12px rgb(0 0 0 / 0.25);
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent), 0 8px 28px -10px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+/* Brilho verde sutil no canto dos cartões (só imagem: a cor vem de bg-*). */
+@utility surface {
+  background-image:
+    linear-gradient(155deg, color-mix(in srgb, var(--primary) 6%, transparent), transparent 40%),
+    linear-gradient(180deg, transparent, color-mix(in srgb, var(--card-2) 70%, transparent));
+}
+
+/* Texto com gradiente verde → ciano (palavras em destaque nos títulos). */
+@utility text-gradient {
+  background-image: linear-gradient(90deg, var(--primary-text), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Selos e avisos: fundo transparente da cor + texto legível. */
+@utility tint-success {
+  background-color: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary-text);
+  border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+}
+@utility tint-warning {
+  background-color: color-mix(in srgb, var(--butter) 15%, transparent);
+  color: var(--butter-text);
+  border-color: color-mix(in srgb, var(--butter) 38%, transparent);
+}
+@utility tint-danger {
+  background-color: color-mix(in srgb, var(--coral) 15%, transparent);
+  color: var(--coral-text);
+  border-color: color-mix(in srgb, var(--coral) 40%, transparent);
+}
+@utility tint-rose {
+  background-color: color-mix(in srgb, var(--rose) 14%, transparent);
+  color: var(--rose-text);
+  border-color: color-mix(in srgb, var(--rose) 35%, transparent);
+}
+@utility tint-muted {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border-color: var(--border);
 }
 
 @layer base {
@@ -97,7 +172,13 @@
   }
 
   body {
+    min-height: 100dvh;
     background-color: var(--background);
+    background-image:
+      radial-gradient(900px 600px at -10% -15%, color-mix(in srgb, var(--primary) 13%, transparent), transparent 60%),
+      radial-gradient(700px 520px at 110% -5%, color-mix(in srgb, var(--cyan) 7%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--background), var(--background-2));
+    background-attachment: fixed;
     color: var(--foreground);
     font-family: var(--font-sans);
     font-feature-settings: 'tnum' 0;
@@ -110,9 +191,9 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   :focus-visible {
@@ -121,7 +202,7 @@
   }
 
   ::selection {
-    background-color: var(--rose);
+    background-color: var(--primary);
     color: var(--on-accent);
   }
 }
@@ -174,7 +255,8 @@
     margin-block: 1rem;
     padding: 0.75rem 1rem;
     border-radius: var(--radius-md);
-    background-color: color-mix(in srgb, var(--butter) 45%, transparent);
+    border-left: 3px solid var(--butter);
+    background-color: color-mix(in srgb, var(--butter) 12%, transparent);
     color: var(--foreground);
   }
   & table {
@@ -194,14 +276,4 @@
     background-color: var(--muted);
     font-weight: 600;
   }
-}
-
-/* No tema escuro, a caixa de destaque fica manteiga sólida com texto grafite. */
-.dark .prose-guide blockquote {
-  background-color: var(--butter);
-  color: var(--on-accent);
-}
-.dark .prose-guide blockquote strong,
-.dark .prose-guide blockquote a {
-  color: var(--on-accent);
 }

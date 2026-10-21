@@ -50,7 +50,7 @@ export default function JourneyAdminPage() {
           {steps.data!.map((step, index) => (
             <div key={step.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-rose/70 font-serif font-semibold text-on-accent">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/12 font-display font-bold text-primary-text">
                   {index + 1}
                 </span>
                 <div className="flex flex-col">

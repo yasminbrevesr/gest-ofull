@@ -15,9 +15,9 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 function readStoredTheme(): Theme {
   try {
-    return localStorage.getItem(STORAGE_KEY) === 'dark' ? 'dark' : 'light'
+    return localStorage.getItem(STORAGE_KEY) === 'light' ? 'light' : 'dark'
   } catch {
-    return 'light'
+    return 'dark'
   }
 }
 
@@ -30,7 +30,7 @@ function applyTheme(theme: Theme) {
   }
 }
 
-/** Tema claro por padrão; a escolha fica salva no navegador e no perfil do usuário. */
+/** Tema escuro por padrão; a escolha fica salva no navegador e no perfil do usuário. */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth()
   const queryClient = useQueryClient()

@@ -102,7 +102,7 @@ export function MovementDialog({ product, initialVariantId, open, onOpenChange }
               </span>
               <ArrowRight className="size-4 text-muted-foreground" aria-hidden />
               <span>
-                Depois: <strong className={`tabular ${after != null && after < 0 ? 'rounded bg-coral px-1 text-on-accent' : ''}`}>{after ?? '—'}</strong>
+                Depois: <strong className={`tabular ${after != null && after < 0 ? 'rounded bg-coral/15 px-1 text-coral-text' : ''}`}>{after ?? '—'}</strong>
               </span>
             </div>
           </div>

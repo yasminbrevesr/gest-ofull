@@ -265,7 +265,7 @@ function SuggestedPrices({
               <p className="text-sm font-semibold">{listingTypeLabels[type]}</p>
               {outcome.ok ? (
                 <>
-                  <p className="tabular font-serif text-2xl font-semibold">{formatCurrency(outcome.price)}</p>
+                  <p className="tabular font-display text-2xl font-semibold">{formatCurrency(outcome.price)}</p>
                   <Button size="sm" variant="soft" className="w-full" onClick={() => onApply(outcome.price, type)}>
                     Usar este preço
                   </Button>
@@ -288,7 +288,7 @@ function MobileSummary({ netProfit, marginPct, status }: { netProfit: number; ma
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
         <div>
           <p className="text-xs text-muted-foreground">Lucro líquido · margem {formatPercent(marginPct)}</p>
-          <p className="tabular font-serif text-xl font-semibold">{formatCurrency(netProfit)}</p>
+          <p className="tabular font-display text-xl font-semibold">{formatCurrency(netProfit)}</p>
         </div>
         <MarginBadge status={status} className="text-xs" />
       </div>

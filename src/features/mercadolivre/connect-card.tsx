@@ -29,7 +29,7 @@ export function ConnectCard({ reconnect = false }: { reconnect?: boolean }) {
   return (
     <Card className="mx-auto max-w-2xl">
       <CardHeader>
-        <span className="mb-2 flex size-12 items-center justify-center rounded-full bg-butter text-on-accent">
+        <span className="mb-2 flex size-12 items-center justify-center rounded-full bg-butter text-on-accent shadow-[0_0_24px_-6px_var(--butter)]">
           <ShieldCheck />
         </span>
         <CardTitle className="text-2xl">{reconnect ? 'Reconecte sua conta do Mercado Livre' : 'Conecte sua conta do Mercado Livre'}</CardTitle>

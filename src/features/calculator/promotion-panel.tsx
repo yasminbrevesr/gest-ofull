@@ -84,13 +84,13 @@ export function PromotionResult({
   const achieved = kind === 'received' ? result.received : kind === 'profit' ? result.netProfit : result.salePrice
   return (
     <Card className="overflow-hidden">
-      <div className="space-y-3 border-b border-primary/30 bg-primary-soft p-5">
+      <div className="space-y-3 border-b border-primary/30 bg-primary/10 p-5">
         <p className="flex items-center gap-2 text-sm font-semibold text-primary-text">
           <Tag className="size-4" aria-hidden /> Coloque no anúncio
         </p>
         <div>
           <p className="text-sm text-muted-foreground dark:text-foreground/80">Preço cheio (o “de”)</p>
-          <p className="tabular font-serif text-4xl font-semibold" aria-live="polite">
+          <p className="tabular font-display text-4xl font-semibold" aria-live="polite">
             {formatCurrency(outcome.listPrice)}
           </p>
         </div>
@@ -156,7 +156,7 @@ export function PromoMobileSummary({ listPrice, promoPrice, discountPct }: { lis
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
         <div>
           <p className="text-xs text-muted-foreground">Preço cheio no anúncio</p>
-          <p className="tabular font-serif text-xl font-semibold">{formatCurrency(listPrice)}</p>
+          <p className="tabular font-display text-xl font-semibold">{formatCurrency(listPrice)}</p>
         </div>
         <p className="text-right text-xs text-muted-foreground">
           −{formatPercent(discountPct, 2)} → comprador paga

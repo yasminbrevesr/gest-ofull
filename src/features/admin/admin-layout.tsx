@@ -29,7 +29,7 @@ export default function AdminLayout() {
             className={({ isActive }) =>
               cn(
                 'inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground [&_svg]:size-4',
-                isActive && 'bg-card font-semibold text-primary-text shadow-soft',
+                isActive && 'bg-field font-semibold text-primary-text shadow-soft',
               )
             }
           >

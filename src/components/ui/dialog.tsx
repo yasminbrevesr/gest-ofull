@@ -8,7 +8,7 @@ const DialogTrigger = DialogPrimitive.Trigger
 const DialogClose = DialogPrimitive.Close
 
 function DialogOverlay({ className, ...props }: ComponentProps<typeof DialogPrimitive.Overlay>) {
-  return <DialogPrimitive.Overlay className={cn('fixed inset-0 z-50 bg-[#1f2a2e]/45 backdrop-blur-[1px]', className)} {...props} />
+  return <DialogPrimitive.Overlay className={cn('fixed inset-0 z-50 bg-black/65 backdrop-blur-[2px]', className)} {...props} />
 }
 
 function DialogContent({ className, children, ...props }: ComponentProps<typeof DialogPrimitive.Content>) {
@@ -17,7 +17,7 @@ function DialogContent({ className, children, ...props }: ComponentProps<typeof 
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          'fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-xl border border-border bg-card p-5 text-card-foreground shadow-lg sm:p-6',
+          'fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto surface rounded-xl border border-border bg-card p-5 text-card-foreground shadow-lg sm:p-6',
           className,
         )}
         {...props}
@@ -41,7 +41,7 @@ function DialogFooter({ className, ...props }: ComponentProps<'div'>) {
 }
 
 function DialogTitle({ className, ...props }: ComponentProps<typeof DialogPrimitive.Title>) {
-  return <DialogPrimitive.Title className={cn('font-serif text-xl font-semibold', className)} {...props} />
+  return <DialogPrimitive.Title className={cn('font-display text-xl font-semibold', className)} {...props} />
 }
 
 function DialogDescription({ className, ...props }: ComponentProps<typeof DialogPrimitive.Description>) {

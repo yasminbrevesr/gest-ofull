@@ -7,10 +7,10 @@ import { useSyncLogs } from './api'
 import { syncKindNames, type SyncLog } from './types'
 
 const icons = {
-  success: { icon: CircleCheck, className: 'bg-primary-soft text-primary-text' },
-  error: { icon: CircleAlert, className: 'bg-coral text-on-accent' },
+  success: { icon: CircleCheck, className: 'tint-success' },
+  error: { icon: CircleAlert, className: 'tint-danger' },
   skipped: { icon: MinusCircle, className: 'bg-muted text-muted-foreground' },
-  info: { icon: Info, className: 'bg-butter text-on-accent' },
+  info: { icon: Info, className: 'tint-warning' },
 }
 
 /** Registro do que a integração fez (o que foi enviado, quando, sucesso/erro). */

@@ -27,18 +27,18 @@ export function JourneyCard() {
             <MapIcon className="size-4" aria-hidden /> Sua jornada
           </div>
           <div className="flex items-baseline gap-3">
-            <p className="tabular font-serif text-4xl font-semibold text-primary-text">{summary.percent}%</p>
+            <p className="tabular font-display text-4xl font-semibold text-primary-text">{summary.percent}%</p>
             <p className="text-sm text-muted-foreground">
               {summary.done} de {summary.total} etapas concluídas
             </p>
           </div>
           <Progress value={summary.percent} aria-label="Progresso da jornada" />
         </div>
-        <div className="rounded-lg bg-rose/40 p-4 text-on-accent sm:max-w-xs dark:bg-rose/80">
+        <div className="rounded-lg border border-primary/30 bg-primary/10 p-4 text-foreground sm:max-w-xs">
           {summary.next ? (
             <>
               <p className="text-xs font-semibold uppercase">Próxima etapa</p>
-              <p className="mt-1 font-serif text-lg leading-snug font-semibold">{summary.next.title}</p>
+              <p className="mt-1 font-display text-lg leading-snug font-semibold">{summary.next.title}</p>
               <Button asChild size="sm" className="mt-3">
                 <Link to={`/jornada/${summary.next.slug}`}>
                   Continuar <ArrowRight />
@@ -47,7 +47,7 @@ export function JourneyCard() {
             </>
           ) : (
             <>
-              <p className="font-serif text-lg font-semibold">Jornada concluída! 🎉</p>
+              <p className="font-display text-lg font-semibold">Jornada concluída! 🎉</p>
               <p className="mt-1 text-sm">Agora é manter o estoque em dia e calcular cada preço.</p>
             </>
           )}

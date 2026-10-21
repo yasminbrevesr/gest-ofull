@@ -35,10 +35,12 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action, className }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card px-6 py-10 text-center', className)}>
-      <div className="flex size-12 items-center justify-center rounded-full bg-rose/60 text-on-accent [&_svg]:size-6">{icon ?? <Inbox />}</div>
+    <div className={cn('flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/60 px-6 py-10 text-center', className)}>
+      <div className="flex size-12 items-center justify-center rounded-full border border-primary/30 bg-primary/12 text-primary-text [&_svg]:size-6">
+        {icon ?? <Inbox />}
+      </div>
       <div className="space-y-1">
-        <p className="font-serif text-lg font-semibold">{title}</p>
+        <p className="font-display text-lg font-semibold">{title}</p>
         {description && <div className="max-w-md text-sm text-muted-foreground">{description}</div>}
       </div>
       {action}
@@ -58,7 +60,7 @@ export function ErrorState({
   className?: string
 }) {
   return (
-    <div role="alert" className={cn('flex flex-col items-center gap-3 rounded-xl border border-coral bg-coral/20 px-6 py-8 text-center', className)}>
+    <div role="alert" className={cn('flex flex-col items-center gap-3 rounded-xl border border-coral/45 bg-coral/10 px-6 py-8 text-center', className)}>
       <CircleAlert className="size-7" aria-hidden />
       <div className="space-y-1">
         <p className="font-semibold">{title}</p>

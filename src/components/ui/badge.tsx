@@ -6,11 +6,11 @@ const badgeVariants = cva('inline-flex w-fit shrink-0 items-center gap-1 whitesp
   variants: {
     variant: {
       default: 'bg-primary text-primary-foreground',
-      success: 'bg-success text-primary-foreground',
-      warning: 'bg-butter text-on-accent',
-      danger: 'bg-coral text-on-accent',
-      rose: 'bg-rose text-on-accent',
-      muted: 'bg-muted text-muted-foreground',
+      success: 'border tint-success',
+      warning: 'border tint-warning',
+      danger: 'border tint-danger',
+      rose: 'border tint-rose',
+      muted: 'border tint-muted',
       outline: 'border border-border text-foreground',
     },
   },

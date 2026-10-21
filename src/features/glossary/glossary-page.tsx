@@ -50,7 +50,7 @@ export default function GlossaryPage() {
         <dl className="grid gap-3 md:grid-cols-2">
           {filtered.map((t) => (
             <Card key={t.id} id={t.slug} className="scroll-mt-24 space-y-1.5 p-4">
-              <dt className="font-serif text-lg font-semibold">{t.term}</dt>
+              <dt className="font-display text-lg font-semibold">{t.term}</dt>
               <dd className="space-y-2 text-sm leading-relaxed text-muted-foreground">
                 <p>{t.short_definition}</p>
                 {t.details && <Markdown className="text-foreground">{t.details}</Markdown>}
