@@ -21,15 +21,17 @@ export default function AdminLayout() {
         }
         description="Conteúdo da jornada e do glossário, tarifas da calculadora e usuários. As mudanças valem na hora, sem publicar o app de novo."
       />
-      <nav aria-label="Seções da administração" className="mb-6 flex max-w-full gap-1 overflow-x-auto rounded-lg bg-muted p-1">
+      <nav aria-label="Seções da administração" className="mb-6 flex max-w-full gap-2 overflow-x-auto">
         {sections.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
               cn(
-                'inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground [&_svg]:size-4',
-                isActive && 'bg-field font-semibold text-primary-text shadow-soft',
+                'inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border px-3 py-1.5 text-sm font-medium transition-colors duration-150 [&_svg]:size-4',
+                isActive
+                  ? 'border-primary bg-primary font-semibold text-primary-foreground'
+                  : 'border-border bg-card text-foreground/80 hover:bg-muted hover:text-foreground',
               )
             }
           >

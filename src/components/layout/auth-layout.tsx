@@ -33,7 +33,7 @@ function Hero() {
       <div className="relative max-w-2xl space-y-8">
         <div className="space-y-5">
           <p className="text-xs font-bold tracking-[0.28em] text-primary-text">SEU COMEÇO NO MERCADO LIVRE</p>
-          <h2 className="text-5xl leading-[1.05] font-extrabold xl:text-6xl">
+          <h2 className="font-display text-5xl leading-[1.05] font-extrabold tracking-tight xl:text-6xl">
             Do primeiro anúncio
             <span className="text-gradient block">ao lucro de verdade.</span>
           </h2>
@@ -82,7 +82,7 @@ export function AuthLayout({ title, subtitle, children, footer }: { title: strin
           <div className="w-full max-w-md space-y-6">
             <div className="space-y-3">
               <BrandMark className="size-12 rounded-xl" />
-              <h1 className="text-3xl sm:text-4xl">{title}</h1>
+              <h1 className="font-display text-3xl tracking-tight sm:text-4xl">{title}</h1>
               {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
             </div>
             {children}

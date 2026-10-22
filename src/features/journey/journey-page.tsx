@@ -71,7 +71,7 @@ export default function JourneyPage() {
             </Link>
           </p>
         ) : (
-          <p className="text-sm text-muted-foreground">Parabéns! Você concluiu toda a jornada. 🎉</p>
+          <p className="text-sm text-muted-foreground">Parabéns! Você concluiu toda a jornada.</p>
         )}
       </Card>
 

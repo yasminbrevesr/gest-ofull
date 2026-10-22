@@ -8,12 +8,12 @@ interface PageHeaderProps {
   className?: string
 }
 
-/** Título da página. Use <Highlight> para destacar uma palavra em azul petróleo. */
+/** Título da página (fundo escuro, texto limpo, sem destaques coloridos). */
 export function PageHeader({ title, description, actions, className }: PageHeaderProps) {
   return (
     <div className={cn('mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between', className)}>
       <div className="min-w-0 space-y-1.5">
-        <h1 className="text-2xl leading-tight sm:text-3xl">{title}</h1>
+        <h1 className="text-2xl leading-tight font-bold sm:text-[2rem]">{title}</h1>
         {description && <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2 sm:shrink-0 sm:justify-end">{actions}</div>}
@@ -22,5 +22,5 @@ export function PageHeader({ title, description, actions, className }: PageHeade
 }
 
 export function Highlight({ children }: { children: ReactNode }) {
-  return <span className="text-gradient">{children}</span>
+  return <span>{children}</span>
 }

@@ -94,7 +94,7 @@ export function ListingsTab({ onImport, importing }: { onImport: () => void; imp
         </Card>
       )}
 
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3">
         <Tabs value={filter} onValueChange={(v) => setFilter(v as Filter)}>
           <TabsList>
             {filters.map((f) => (
@@ -105,7 +105,7 @@ export function ListingsTab({ onImport, importing }: { onImport: () => void; imp
           </TabsList>
         </Tabs>
         <div className="flex gap-2">
-          <div className="relative flex-1 lg:w-64">
+          <div className="relative flex-1">
             <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
             <Input
               type="search"

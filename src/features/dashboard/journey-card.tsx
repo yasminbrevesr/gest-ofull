@@ -47,7 +47,7 @@ export function JourneyCard() {
             </>
           ) : (
             <>
-              <p className="font-display text-lg font-semibold">Jornada concluída! 🎉</p>
+              <p className="font-display text-lg font-semibold">Jornada concluída!</p>
               <p className="mt-1 text-sm">Agora é manter o estoque em dia e calcular cada preço.</p>
             </>
           )}

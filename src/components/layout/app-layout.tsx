@@ -1,6 +1,6 @@
 import { LogOut, Menu, UserRound } from 'lucide-react'
 import { useState } from 'react'
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -13,13 +13,16 @@ import {
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { useAuth, useProfile } from '@/providers/auth'
-import { Brand, BrandMark } from './brand'
+import { Brand } from './brand'
 import { navItems } from './nav'
 import { ThemeToggle } from './theme-toggle'
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const { data: profile } = useProfile()
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
   const isAdmin = profile?.role === 'admin'
+  const itemClass = 'flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-medium transition-colors duration-150 [&_svg]:size-5'
   return (
     <nav aria-label="Menu principal" className="flex flex-col gap-1">
       {navItems
@@ -30,21 +33,32 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
             to={item.to}
             end={item.to === '/'}
             onClick={onNavigate}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150 [&_svg]:size-[18px]',
-                isActive
-                  ? 'bg-linear-to-r from-primary/20 to-primary/5 font-semibold text-primary-text ring-1 ring-primary/30 ring-inset'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-              )
-            }
+            className={({ isActive }) => cn(itemClass, isActive ? 'bg-muted text-foreground' : 'text-foreground/85 hover:bg-muted/60 hover:text-foreground')}
           >
             <item.icon strokeWidth={1.75} aria-hidden />
             {item.label}
           </NavLink>
         ))}
+      <button
+        type="button"
+        className={cn(itemClass, 'text-coral-text hover:bg-coral/10')}
+        onClick={async () => {
+          onNavigate?.()
+          await signOut()
+          navigate('/entrar', { replace: true })
+        }}
+      >
+        <LogOut strokeWidth={1.75} aria-hidden />
+        Sair
+      </button>
     </nav>
   )
+}
+
+/** Seção atual (mostrada na barra superior, ao lado da marca). */
+function useCurrentSection() {
+  const { pathname } = useLocation()
+  return navItems.find((item) => item.to !== '/' && (pathname === item.to || pathname.startsWith(`${item.to}/`)))
 }
 
 function UserMenu() {
@@ -91,12 +105,13 @@ function UserMenu() {
   )
 }
 
-/** Estrutura das telas logadas: menu lateral (computador) ou gaveta (celular) + barra superior. */
+/** Estrutura das telas logadas: barra superior inteira + menu lateral (computador) ou gaveta (celular). */
 export function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const section = useCurrentSection()
 
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[260px_1fr]">
+    <div className="flex min-h-dvh flex-col">
       <a
         href="#conteudo"
         className="sr-only z-50 rounded-md bg-primary px-3 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
@@ -104,37 +119,43 @@ export function AppLayout() {
         Pular para o conteúdo
       </a>
 
-      {/* O menu lateral é sempre escuro, também no tema claro. */}
-      <aside className="dark sticky top-0 hidden h-dvh flex-col gap-6 border-r border-border bg-sidebar bg-[radial-gradient(420px_320px_at_0%_0%,rgb(255_196_0/0.10),transparent_70%)] px-4 py-5 text-foreground lg:flex">
-        <Link to="/" className="rounded-md px-1">
-          <Brand />
+      <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-background px-4 sm:px-8">
+        <Button variant="ghost" size="icon" className="-ml-2 lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Abrir menu">
+          <Menu />
+        </Button>
+        <Link to="/" className="rounded-md" aria-label="Início">
+          <Brand className="max-sm:[&>span:last-child]:hidden" />
         </Link>
-        <NavLinks />
-      </aside>
+        <span aria-hidden className="mx-3 hidden h-6 w-px bg-border sm:block" />
+        <nav aria-label="Atalhos" className="hidden items-center gap-6 text-sm sm:flex">
+          <Link to="/" className={cn('transition-colors hover:text-foreground', section ? 'text-muted-foreground' : 'font-medium text-foreground')}>
+            Início
+          </Link>
+          {section && (
+            <Link to={section.to} className="font-medium text-foreground">
+              {section.label}
+            </Link>
+          )}
+        </nav>
+        <div className="ml-auto flex items-center gap-1">
+          <ThemeToggle />
+          <UserMenu />
+        </div>
+      </header>
 
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetContent aria-describedby={undefined} className="dark gap-6 border-border bg-sidebar px-4 py-5 text-foreground">
+        <SheetContent aria-describedby={undefined} className="gap-6 border-border bg-background px-3 py-5">
           <SheetTitle className="sr-only">Menu</SheetTitle>
-          <Brand className="pr-8" />
+          <Brand className="px-2 pr-10" />
           <NavLinks onNavigate={() => setMenuOpen(false)} />
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-w-0 flex-col">
-        <header className="sticky top-0 z-40 flex h-16 items-center gap-2 border-b border-border bg-background/75 px-4 backdrop-blur-md sm:px-6">
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Abrir menu">
-            <Menu />
-          </Button>
-          <Link to="/" className="flex items-center gap-2 lg:hidden" aria-label="Início">
-            <BrandMark className="size-8" />
-            <span className="font-display font-bold max-sm:sr-only">Gestão Decola Full</span>
-          </Link>
-          <div className="ml-auto flex items-center gap-1">
-            <ThemeToggle />
-            <UserMenu />
-          </div>
-        </header>
-        <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="flex-1 lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
+        <aside className="sticky top-16 hidden h-[calc(100dvh-4rem)] overflow-y-auto border-r border-border px-3 py-6 lg:block">
+          <NavLinks />
+        </aside>
+        <main id="conteudo" className="mx-auto w-full max-w-6xl min-w-0 px-4 py-6 sm:px-8 sm:py-10">
           <Outlet />
         </main>
       </div>
